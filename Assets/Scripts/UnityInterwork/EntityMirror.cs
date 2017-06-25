@@ -6,6 +6,7 @@ namespace UnityInterwork {
 class EntityMirror: MonoBehaviour {
     public Vector3 positionAdjust;
     public Game.Entity entity;
+
     public int team;
     public float angle;
 

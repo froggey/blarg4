@@ -982,6 +982,8 @@ GameObject:
   - component: {fileID: 1713436702}
   - component: {fileID: 1713436701}
   - component: {fileID: 1713436703}
+  - component: {fileID: 1713436704}
+  - component: {fileID: 1713436705}
   m_Layer: 9
   m_Name: Game
   m_TagString: Untagged
@@ -1025,27 +1027,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9f13ec22b88476aaa35db1378ca844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitscanEffects:
-  - name: BulletStorm
-    prefab: {fileID: 1053201626151058, guid: e685ad298e96e4d2d9148f9f75691b2a, type: 2}
-  - name: OrbRay
-    prefab: {fileID: 1547464691062196, guid: ab97fdae1511d4cf49ccb4cb7b33f082, type: 2}
-  - name: RailGunBolt
-    prefab: {fileID: 1996419021020970, guid: 8f673e04fb5a54392bd2d7fafe1e1473, type: 2}
-  - name: Punch
-    prefab: {fileID: 1751421979176294, guid: 81d77096263fa45248b358436069cafe, type: 2}
-  - name: LightningBolt
-    prefab: {fileID: 1678064807990368, guid: 90b0b4109b63844e8b3314a7a25ad8a6, type: 2}
-  - name: TankShell
-    prefab: {fileID: 1536219656187064, guid: 6518bd43dd67740cb87423b739c8a119, type: 2}
+  resourceBar: {fileID: 1933961131}
+  statusBar: {fileID: 1171279931}
+  enableInterpolation: 1
+--- !u!114 &1713436704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1713436700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de7dc01a1a754570b81d4885af41907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1713436705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1713436700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31e07092a30c4f42b8f68bf3be8d3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   minimapDot: {fileID: 1028292861286006, guid: 96d3a382ee70441748134fc78122aa4a, type: 2}
   minimapTransform: {fileID: 441125393}
   minimapTerrain: {fileID: 1186066985}
   minimapTerrainTexture: {fileID: 0}
   minimapContainerTransform: {fileID: 1471215264}
-  resourceBar: {fileID: 1933961131}
-  statusBar: {fileID: 1171279931}
-  enableInterpolation: 1
 --- !u!1 &1801672998
 GameObject:
   m_ObjectHideFlags: 0

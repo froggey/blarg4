@@ -2,19 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-[System.Serializable]
-public class NamePrefabMap {
-    public string name;
-    public GameObject prefab;
-}
-
 class Testshit: MonoBehaviour, Game.IWorldEventListener {
     public Game.Map map;
     public Game.Navigation navi;
     public Game.World world;
 
-    public NamePrefabMap[] hitscanEffects = null;
-    Dictionary<string, GameObject> _hitscanEffects = new Dictionary<string, GameObject>();
+    WorldManager worldManager;
+    MinimapManager minimapManager;
 
     void Awake() {
         try {
@@ -26,9 +20,9 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         world = new Game.World(map, navi);
         world.eventListener = this;
 
-        foreach(var foo in hitscanEffects) {
-            _hitscanEffects.Add(foo.name, foo.prefab);
-        }
+        worldManager = GetComponent<WorldManager>();
+        minimapManager = GetComponent<MinimapManager>();
+        minimapManager.map = map;
     }
 
     void LoadMap() {
@@ -100,11 +94,9 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     }
 
     PlayerInterface piface;
-    KeyboardMove theCamera;
 
     void Start() {
         piface = Object.FindObjectOfType<PlayerInterface>();
-        theCamera = Object.FindObjectOfType<KeyboardMove>();
         var mr = (UnityInterwork.MapRenderer)Object.FindObjectOfType<UnityInterwork.MapRenderer>();
         if(mr != null) {
             mr.map = map;
@@ -114,21 +106,6 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
             rp.map = map;
             rp.navigation = navi;
         }
-
-        minimapTerrainTexture = new Texture2D(map.width, map.depth);
-        for(var x = 0; x < map.width; x += 1) {
-            for(var z = 0; z < map.depth; z += 1) {
-                var height = (float)map.Height(new Game.DVector3(x,0,z));
-                if(height < 0) {
-                    minimapTerrainTexture.SetPixel(x,z, Color.blue);
-                } else {
-                    var shade = Mathf.Clamp01(height / (float)Game.Map.maxHeight);
-                    minimapTerrainTexture.SetPixel(x,z, new Color(shade, 0.5f + shade / 2, shade));
-                }
-            }
-        }
-        minimapTerrainTexture.Apply();
-        minimapTerrain.texture = minimapTerrainTexture;
 
         world.resourceNameToId.Add("Metal", 1);
         world.resourceNameToId.Add("Smoke", 2);
@@ -187,124 +164,38 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
             piface.placement_cancel_cb();
             Destroy(piface.placement_go);
         }
-        var placement_go = Instantiate(Resources.Load<GameObject>(prototype));
+        var placement_go = Instantiate(Resources.Load<GameObject>("Models/" + prototype));
         piface.placement_go = placement_go;
         piface.placement_action_cb = action_cb;
         piface.placement_valid_cb = valid_cb;
         piface.placement_cancel_cb = cancel_cb;
     }
 
-    Dictionary<Game.Entity, UnityInterwork.EntityMirror> entityToUnity1 = new Dictionary<Game.Entity, UnityInterwork.EntityMirror>();
-    Dictionary<Game.Entity, UnityInterwork.EntityMirror> entityToUnity2 = new Dictionary<Game.Entity, UnityInterwork.EntityMirror>();
-    Dictionary<Game.Entity, UnityInterwork.EntityMirror> entityToUnity3 = new Dictionary<Game.Entity, UnityInterwork.EntityMirror>();
-    Dictionary<Game.Entity, UnityInterwork.EntityMirror> entityToUnity4 = new Dictionary<Game.Entity, UnityInterwork.EntityMirror>();
-    Dictionary<Game.Entity, UnityInterwork.MinimapDot> entityToMinimap = new Dictionary<Game.Entity, UnityInterwork.MinimapDot>();
-
-    public GameObject minimapDot = null;
-    public RectTransform minimapTransform = null;
-    public UnityEngine.UI.RawImage minimapTerrain = null;
-    public Texture2D minimapTerrainTexture = null;
-    public RectTransform minimapContainerTransform = null;
-
-    UnityInterwork.MinimapController minimapController = new UnityInterwork.MinimapController();
 
     public void EntityCreated(Game.Entity e) {
-        Debug.Log("Created " + e.modelName + " prefab is "+ Resources.Load<GameObject>(e.modelName));
-        var prefab = Resources.Load<GameObject>(e.modelName);
-        var go1 = Instantiate(prefab);
-        var mirror1 = go1.GetComponent<UnityInterwork.EntityMirror>();
-        mirror1.entity = e;
-        mirror1.positionAdjust = new Vector3(0,0,0);
-        entityToUnity1.Add(e, mirror1);
-        var go2 = Instantiate(prefab);
-        var mirror2 = go2.GetComponent<UnityInterwork.EntityMirror>();
-        mirror2.entity = e;
-        mirror2.positionAdjust = new Vector3(-1024,0,0);
-        entityToUnity2.Add(e, mirror2);
-        var go3 = Instantiate(prefab);
-        var mirror3 = go3.GetComponent<UnityInterwork.EntityMirror>();
-        mirror3.entity = e;
-        mirror3.positionAdjust = new Vector3(0,0,-1024);
-        entityToUnity3.Add(e, mirror3);
-        var go4 = Instantiate(prefab);
-        var mirror4 = go4.GetComponent<UnityInterwork.EntityMirror>();
-        mirror4.entity = e;
-        mirror4.positionAdjust = new Vector3(-1024,0,-1024);
-        entityToUnity4.Add(e, mirror4);
-
-        var minimap_go = Instantiate(minimapDot);
-        minimap_go.transform.SetParent(minimapContainerTransform, false);
-        var minimap_dot = minimap_go.GetComponent<UnityInterwork.MinimapDot>();
-        minimap_dot.entity = e;
-        minimap_dot.controller = minimapController;
-        entityToMinimap.Add(e, minimap_dot);
+        worldManager.EntityCreated(e);
+        minimapManager.EntityCreated(e);
     }
 
     public void EntityDestroyed(Game.Entity e) {
         Debug.Log("Destroying " + e.modelName);
-        var mirror1 = entityToUnity1[e];
-        entityToUnity1.Remove(e);
-        mirror1.Destroyed();
-        var mirror2 = entityToUnity2[e];
-        entityToUnity2.Remove(e);
-        mirror2.Destroyed();
-        var mirror3 = entityToUnity3[e];
-        entityToUnity3.Remove(e);
-        mirror3.Destroyed();
-        var mirror4 = entityToUnity4[e];
-        entityToUnity4.Remove(e);
-        mirror4.Destroyed();
-        Destroy(entityToMinimap[e].gameObject);
-        entityToMinimap.Remove(e);
-    }
-
-    void HitscanEffect(Game.HitscanWeapon weapon, string effectName, Game.Entity target, float duration) {
-        GameObject effectPrefab = null;
-        if(!_hitscanEffects.TryGetValue(effectName, out effectPrefab)) {
-            Debug.Log("Missing hitscan effect " + effectName);
-            return;
-        }
-        var go1 = Instantiate(effectPrefab, (Vector3)weapon.entity.position, Quaternion.identity);
-        var effect1 = go1.GetComponent<HitscanEffect>();
-        effect1.weapon = weapon;
-        effect1.target = target;
-        effect1.duration = duration;
-        effect1.positionAdjust = new Vector3(0,0,0);
-        var go2 = Instantiate(effectPrefab, (Vector3)weapon.entity.position, Quaternion.identity);
-        var effect2 = go2.GetComponent<HitscanEffect>();
-        effect2.weapon = weapon;
-        effect2.target = target;
-        effect2.duration = duration;
-        effect2.positionAdjust = new Vector3(0,0,-1024);
-        var go3 = Instantiate(effectPrefab, (Vector3)weapon.entity.position, Quaternion.identity);
-        var effect3 = go3.GetComponent<HitscanEffect>();
-        effect3.weapon = weapon;
-        effect3.target = target;
-        effect3.duration = duration;
-        effect3.positionAdjust = new Vector3(-1024,0,0);
-        var go4 = Instantiate(effectPrefab, (Vector3)weapon.entity.position, Quaternion.identity);
-        var effect4 = go4.GetComponent<HitscanEffect>();
-        effect4.weapon = weapon;
-        effect4.target = target;
-        effect4.duration = duration;
-        effect4.positionAdjust = new Vector3(-1024,0,-1024);
+        worldManager.EntityDestroyed(e);
+        minimapManager.EntityDestroyed(e);
     }
 
     public void HitscanBurstFire(Game.HitscanWeapon weapon, string effect, Game.Entity target) {
-        Debug.Log("Hitscan burst fire "+ effect);
-        HitscanEffect(weapon, effect, target, -1);
+        worldManager.HitscanBurstFire(weapon, effect, target);
+        minimapManager.HitscanBurstFire(weapon, effect, target);
     }
 
     public void HitscanSustainedFire(Game.HitscanWeapon weapon, string effect, Game.Entity target, Game.DReal duration) {
-        Debug.Log("Hitscan sustain fire "+ effect + " " + duration);
-        HitscanEffect(weapon, effect, target, (float)duration);
+        worldManager.HitscanSustainedFire(weapon, effect, target, duration);
+        minimapManager.HitscanSustainedFire(weapon, effect, target, duration);
     }
 
     public void Animate(Game.Entity e, string animation) {
-        entityToUnity1[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity2[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity3[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity4[e].gameObject.SendMessage("Animation" + animation);
+        worldManager.Animate(e, animation);
+        minimapManager.Animate(e, animation);
     }
 
     public void StopCommand(UnityInterwork.EntityMirror em) {
@@ -340,13 +231,6 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     }
 
     void Update() {
-        minimapController.xoff = theCamera.transform.position.x;
-        minimapController.zoff = theCamera.transform.position.z;
-        minimapTerrain.uvRect = new Rect(-minimapController.xoff / map.width,
-                                         -minimapController.zoff / map.depth,
-                                         1,1);
-        minimapTransform.eulerAngles = new Vector3(0,0,theCamera.currentRotation);
-
         timeSlop += Time.deltaTime;
         while(timeSlop > (float)Game.World.deltaTime) {
             timeSlop -= (float)Game.World.deltaTime;
