@@ -23,7 +23,7 @@ public class GroundMotor: Component, IMotor {
         var remaining_movement = moveSpeed * World.deltaTime;
         while(remaining_movement > 0 && currentPath != null && currentPath.Count != 0) {
             // If there is something in the way, then ignore this waypoint.
-            if(currentPath.Count > 1 && World.current.FindEntitiesWithinRadius(new DVector3(currentPath[0].x, 0, currentPath[0].z), 0).FirstOrDefault() != entity) {
+            if(currentPath.Count > 1 && World.current.FindEntitiesWithinRadius(new DVector3(currentPath[0].x, 0, currentPath[0].z), 0).Where(e => e != entity).Any()) {
                 currentPath.RemoveAt(0);
                 continue;
             }

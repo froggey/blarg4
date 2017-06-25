@@ -182,6 +182,7 @@ public class Entity {
     }
 
     public void MoveCommand(DVector3 position) {
+        position = World.current.map.WrapPosition(position);
         foreach(var c in components) {
             c.MoveCommand(position);
         }
@@ -194,12 +195,14 @@ public class Entity {
     }
 
     public void DeployCommand(DVector3 position) {
+        position = World.current.map.WrapPosition(position);
         foreach(var c in components) {
             c.DeployCommand(position);
         }
     }
 
     public void BuildCommand(int id, DVector3 position) {
+        position = World.current.map.WrapPosition(position);
         foreach(var c in components) {
             c.BuildCommand(id, position);
         }

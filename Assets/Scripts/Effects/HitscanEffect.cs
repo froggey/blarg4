@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 class HitscanEffect: MonoBehaviour {
+    public Vector3 positionAdjust;
     public Game.HitscanWeapon weapon = null;
     public Game.Entity target = null;
     public float duration = 0.0f;
@@ -26,7 +27,7 @@ class HitscanEffect: MonoBehaviour {
         ps = GetComponent<ParticleSystem>();
         if(ps != null) {
             if(burst) {
-                transform.position = (Vector3)target.position;
+                transform.position = (Vector3)target.position + positionAdjust;
                 Destroy(gameObject, ps.duration);
             } else {
                 UpdateParticleOriginDirection();
@@ -42,17 +43,17 @@ class HitscanEffect: MonoBehaviour {
     }
 
     void UpdateLinePosition() {
-        lr.SetPosition(0, (Vector3)weapon.entity.position);
-        lr.SetPosition(1, (Vector3)target.position);
+        lr.SetPosition(0, (Vector3)weapon.entity.position + positionAdjust);
+        lr.SetPosition(1, (Vector3)target.position + positionAdjust);
     }
 
     void UpdateLightningPosition() {
-        lightning.origin = (Vector3)weapon.entity.position;
-        lightning.target = (Vector3)target.position;
+        lightning.origin = (Vector3)weapon.entity.position + positionAdjust;
+        lightning.target = (Vector3)target.position + positionAdjust;
     }
 
     void UpdateParticleOriginDirection() {
-        transform.position = (Vector3)weapon.entity.position;
+        transform.position = (Vector3)weapon.entity.position + positionAdjust;
         transform.rotation = Quaternion.LookRotation((Vector3)target.position - (Vector3)weapon.entity.position);
     }
 

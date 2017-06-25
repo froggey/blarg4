@@ -115,8 +115,10 @@ class KeyboardMove: MonoBehaviour {
         }
 
         // Wrap to terrain.
-        var x = Mathf.Repeat(transform.position.x, Terrain.activeTerrain.terrainData.size.x);
-        var z = Mathf.Repeat(transform.position.z, Terrain.activeTerrain.terrainData.size.z);
+        var twidth = Terrain.activeTerrain.terrainData.size.x;
+        var tdepth = Terrain.activeTerrain.terrainData.size.z;
+        var x = Mathf.Repeat(transform.position.x + twidth/2, twidth) - twidth/2;
+        var z = Mathf.Repeat(transform.position.z + tdepth/2, tdepth) - tdepth/2;
 
         var y = Mathf.Max(heightCurve.Evaluate(currentZoom), Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z)) + 15.0f);
         transform.position = new Vector3(x, y, z);

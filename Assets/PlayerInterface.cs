@@ -146,7 +146,6 @@ class PlayerInterface: MonoBehaviour {
         if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
             RaycastHit hit;
             if(currentlySelected != null && cameraSet.Raycast(Input.mousePosition, out hit)) {
-                DoFire((Game.DVector3)(hit.point + Vector3.up * 0.1f), (Game.DVector3)(currentlySelected.transform.position + Vector3.up * 0.1f));
                 var mirror = currentlySelected.GetComponent<UnityInterwork.EntityMirror>();
                 if(mirror != null) {
                     var hit_mirror = hit.collider.GetComponentInParent<UnityInterwork.EntityMirror>();

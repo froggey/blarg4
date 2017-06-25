@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace UnityInterwork {
 
 class EntityMirror: MonoBehaviour {
+    public Vector3 positionAdjust;
     public Game.Entity entity;
     public int team;
     public float angle;
@@ -122,11 +123,11 @@ class EntityMirror: MonoBehaviour {
         }
 
         var lerp = interpolationTime / (float)Game.World.deltaTime;
-        transform.position = Vector3.Lerp(currentPosition, nextPosition, lerp);
+        transform.position = Vector3.Lerp(currentPosition, nextPosition, lerp) + positionAdjust;
         transform.eulerAngles = Vector3.Lerp(currentRotation, nextRotation, lerp);
 
         if(!testshit.enableInterpolation) {
-            transform.position = nextPosition;
+            transform.position = nextPosition + positionAdjust;
             transform.eulerAngles = nextRotation;
         }
 
