@@ -6,7 +6,6 @@ namespace Game {
 
 public class AirMotor: Component, IMotor {
     public DReal moveSpeed;
-    public bool nonstop;
 
     public DReal wobbleFrequency;
     public DReal wobbleAmplitude;

@@ -7,6 +7,10 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     public Game.Navigation navi;
     public Game.World world;
 
+    public GameObject minimapPrefab;
+
+    public RectTransform minimapContainer;
+
     WorldManager worldManager;
     MinimapManager minimapManager;
 
@@ -21,7 +25,9 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         world.eventListener = this;
 
         worldManager = GetComponent<WorldManager>();
-        minimapManager = GetComponent<MinimapManager>();
+        var mm_go = Instantiate(minimapPrefab);
+        mm_go.transform.SetParent(minimapContainer, false);
+        minimapManager = mm_go.GetComponent<MinimapManager>();
         minimapManager.map = map;
     }
 
@@ -84,6 +90,17 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         }
     }
 
+    void LoadResources() {
+        Debug.Log("Loading resources...");
+        var resources_json = System.IO.File.ReadAllText("Resources.json");
+        var resources = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(resources_json);
+
+        for(var i = 0; i < resources.Count; i += 1) {
+            Debug.Log(resources[i] + " = " + i);
+            world.resourceNameToId.Add(resources[i], i);
+        }
+    }
+
     void LoadUnits() {
         foreach(var unit_file in System.IO.Directory.GetFiles("Units", "*.json")) {
             Debug.Log("Loading " + unit_file + "...");
@@ -96,7 +113,7 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     PlayerInterface piface;
 
     void Start() {
-        piface = Object.FindObjectOfType<PlayerInterface>();
+        piface = GetComponent<PlayerInterface>();
         var mr = (UnityInterwork.MapRenderer)Object.FindObjectOfType<UnityInterwork.MapRenderer>();
         if(mr != null) {
             mr.map = map;
@@ -107,9 +124,7 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
             rp.navigation = navi;
         }
 
-        world.resourceNameToId.Add("Metal", 1);
-        world.resourceNameToId.Add("Smoke", 2);
-
+        LoadResources();
         LoadUnits();
 
         SpawnTeam(1);
@@ -138,8 +153,9 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     void SpawnTeam(int team) {
         var ent = new Game.Entity(team, new Game.DVector3(0, 0, 0), "Team");
         ent.AddComponent(new Game.Team(ent));
-        ent.AddComponent(new Game.ResourcePool(ent, 1, 1000));
-        ent.AddComponent(new Game.ResourcePool(ent, 2, 50));
+        foreach(var id in world.resourceNameToId.Select(kv => kv.Value).OrderBy(x => x)) {
+            ent.AddComponent(new Game.ResourcePool(ent, id, 1000));
+        }
     }
 
     void SpawnMetalSource(int x, int z) {
@@ -170,7 +186,6 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         piface.placement_valid_cb = valid_cb;
         piface.placement_cancel_cb = cancel_cb;
     }
-
 
     public void EntityCreated(Game.Entity e) {
         worldManager.EntityCreated(e);
