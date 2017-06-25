@@ -1,0 +1,45 @@
+{
+  "name": "Wyvern",
+  "data": {
+    "buildTime": "240",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "15",
+        "height": "6",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "500"
+      }
+    },
+    {
+      "kind": "ProjectileWeapon",
+      "data": {
+        "projectile": "Fireball",
+        "range": "100",
+        "fireRate": "0.1"
+      }
+    },
+    {
+      "kind": "AirMotor",
+      "data": {
+        "speed": "50",
+        "wobbleFrequency": "0",
+        "wobbleAmplitude": "0",
+        "floatOffset": "25",
+        "verticalSpeed": "50"
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

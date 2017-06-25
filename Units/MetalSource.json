@@ -1,0 +1,14 @@
+{
+  "name": "MetalSource",
+  "resources": {},
+  "data": {},
+  "components": [
+    {
+      "kind": "ResourceSource",
+      "data": {
+        "resource": "Metal",
+        "initial": "100000"
+      }
+    }
+  ]
+}

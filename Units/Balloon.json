@@ -1,0 +1,41 @@
+{
+  "name": "Balloon",
+  "data": {
+    "buildTime": "30",
+    "buildMode": "spawnImmediate",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2",
+        "height": "5.5",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "50"
+      }
+    },
+    {
+      "kind": "AirMotor",
+      "data": {
+        "speed": "25",
+        "wobbleFrequency": "0.5",
+        "wobbleAmplitude": "1",
+        "floatOffset": "10",
+        "verticalSpeed": "10"
+      }
+    },
+    {
+      "kind": "ResourceHarvester",
+      "data": {
+        "resource": "Smoke",
+        "capacity": "100",
+        "rate": "10"
+      }
+    }
+  ]
+}

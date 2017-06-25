@@ -1,0 +1,42 @@
+{
+  "name": "WizardTower",
+  "data": {
+    "buildTime": "60",
+    "buildMode": "buildImmediate",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "6",
+        "height": "25.25",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "500"
+      }
+    },
+    {
+      "kind": "ResourceCollectionPoint",
+      "data": {
+        "resource": "Smoke"
+      }
+    },
+    {
+      "kind": "WizardTower",
+      "data": {
+        "harvester": "Balloon",
+        "wizard": "Wizard",
+      }
+    },
+    {
+      "kind": "BuildRadius",
+      "data": {
+        "radius": "50",
+      }
+    }
+  ]
+}

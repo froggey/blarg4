@@ -1,0 +1,30 @@
+{
+  "name": "MetalMine",
+  "resources": {
+    "Metal": "100"
+  },
+  "data": {},
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "5",
+        "height": "8",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "150"
+      }
+    },
+    {
+      "kind": "Mine",
+      "data": {
+        "resource": "Metal",
+        "rate": "50"
+      }
+    }
+  ]
+}

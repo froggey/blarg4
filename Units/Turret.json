@@ -1,0 +1,38 @@
+{
+  "name": "Turret",
+  "data": {
+    "buildTime": "15",
+    "buildMode": "buildThenPlace",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2.5",
+        "height": "10",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "100"
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "10",
+        "fireRate": "0.5",
+        "sustainTime": "1",
+        "effect": "BulletStorm",
+      }
+    },
+    {
+      "kind": "AutoTurret",
+      "data": {
+      }
+    }
+  ]
+}

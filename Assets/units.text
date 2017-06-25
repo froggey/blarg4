@@ -1,0 +1,31 @@
+Mechanical Buildings
+-----
+Construction Yard - Builds other buildings & trucks, provides power
+Barracks - Builds mechanical attack units (tank, plane, lr, zmach)
+Gun Turret - Automated defence
+Railgun Turret - Beefier automated defence
+Ore Mine - Mines stuff from ore patches
+Solar panel - Provides power
+Smoke collector - Collects smoke from smoke patches (maybe generate power instead)
+
+Mechanical Units
+-----
+Truck - Unpacks into buildings (CY, turret & mine variants)
+Tank - Shooty shooty
+Plane - Zoomy shooty
+Land Rover - Pew pew
+Zmachine - Artillery
+
+Magical Buildings
+-----
+Wizard Tower - Semi-unique, smoke collection point. builds hot air balloons
+Henge - Builds magical attack units
+Orb Tower - Automated defence
+
+Magical Units
+-----
+Wizard - Unique, player loses on death. Casts spells to build & attack.
+Duck - Nibbles things, quacks lightning.
+Wyvern - Eats things, breaths fire.
+Golem - Hits things.
+Sprite - Annoys things.

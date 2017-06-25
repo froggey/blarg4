@@ -1,0 +1,42 @@
+{
+  "name": "RailGun",
+  "resources": {
+    "Metal": "100",
+    "Smoke": "25",
+  },
+  "data": {
+    "buildTime": "30",
+    "buildMode": "buildThenPlace",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2.5",
+        "height": "10",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "150"
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "100",
+        "fireRate": "5",
+        "sustainTime": "0",
+        "effect": "RailGunBolt",
+      }
+    },
+    {
+      "kind": "AutoTurret",
+      "data": {
+      }
+    }
+  ]
+}

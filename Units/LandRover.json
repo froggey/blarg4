@@ -1,0 +1,43 @@
+{
+  "name": "LandRover",
+  "data": {
+    "buildTime": "10",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "1.8",
+        "height": "2.5",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "10",
+        "fireRate": "0.5",
+        "sustainTime": "1",
+        "effect": "BulletStorm",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "50"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "20",
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

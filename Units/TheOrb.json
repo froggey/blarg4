@@ -1,0 +1,38 @@
+{
+  "name": "TheOrb",
+  "data": {
+    "buildTime": "20",
+    "buildMode": "buildInPlace",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2.5",
+        "height": "10",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "150"
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "50",
+        "fireRate": "1",
+        "sustainTime": "2",
+        "effect": "OrbRay",
+      }
+    },
+    {
+      "kind": "AutoTurret",
+      "data": {
+      }
+    }
+  ]
+}

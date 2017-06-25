@@ -1,0 +1,41 @@
+{
+  "name": "ZMachine",
+  "data": {
+    "buildTime": "15",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "3.6",
+        "height": "3.3",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "100"
+      }
+    },
+    {
+      "kind": "ProjectileWeapon",
+      "data": {
+        "projectile": "PlasmaBolt",
+        "range": "250",
+        "fireRate": "5"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "20",
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

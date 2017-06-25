@@ -1,0 +1,43 @@
+{
+  "name": "Duck",
+  "data": {
+    "buildTime": "10",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2.5",
+        "height": "4",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "10",
+        "fireRate": "2",
+        "sustainTime": "0",
+        "effect": "LightningBolt",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "50"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "25",
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

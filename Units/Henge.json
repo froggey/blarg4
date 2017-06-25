@@ -1,0 +1,37 @@
+{
+  "name": "Henge",
+  "data": {
+    "buildTime": "20",
+    "buildMode": "buildInPlace",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "12",
+        "height": "10",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "250"
+      }
+    },
+    {
+      "kind": "Factory",
+      "data": {
+        "build0": "Golem",
+        "build1": "Duck",
+        "build2": "Wyvern"
+      }
+    },
+    {
+      "kind": "BuildRadius",
+      "data": {
+        "radius": "40",
+      }
+    }
+  ]
+}

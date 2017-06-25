@@ -1,0 +1,16 @@
+{
+  "name": "Fireball",
+  "data": {},
+  "components": [
+    {
+      "kind": "Projectile",
+      "data": {
+        "speed": "150",
+        "lifetime": "5",
+        "directDamage": "15",
+        "splashDamage": "10",
+        "splashRadius": "20",
+      }
+    }
+  ]
+}

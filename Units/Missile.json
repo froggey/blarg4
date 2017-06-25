@@ -1,0 +1,30 @@
+{
+  "name": "Missile",
+  "data": {},
+  "components": [
+    {
+      "kind": "Projectile",
+      "data": {
+        "speed": "50",
+        "lifetime": "5",
+        "directDamage": "50",
+        "splashDamage": "10",
+        "splashRadius": "20",
+      }
+    },
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "0.1",
+        "height": "0.1",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "1"
+      }
+    },
+  ]
+}

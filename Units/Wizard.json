@@ -1,0 +1,60 @@
+{
+  "name": "Wizard",
+  "data": {
+    "buildTime": "60",
+    "buildMode": "spawnImmediate",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "2",
+        "height": "5",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "50"
+      }
+    },
+    {
+      "kind": "ProjectileWeapon",
+      "data": {
+        "projectile": "Fireball",
+        "range": "100",
+        "fireRate": "1"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "25"
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    },
+    {
+      "kind": "Wizard",
+      "data": {
+        "tower": "WizardTower"
+      }
+    },
+    {
+      "kind": "Factory",
+      "data": {
+        "build0": "Henge",
+        "build1": "TheOrb"
+      }
+    },
+    {
+      "kind": "BuildRadius",
+      "data": {
+        "radius": "30",
+      }
+    }
+  ]
+}

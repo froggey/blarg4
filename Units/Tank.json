@@ -1,0 +1,46 @@
+{
+  "name": "Tank",
+  "resources": {
+    "Metal": "100",
+  },
+  "data": {
+    "buildTime": "15",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "3.6",
+        "height": "3.3",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "150"
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "100",
+        "damage": "10",
+        "fireRate": "2",
+        "sustainTime": "0",
+        "effect": "TankShell",
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "40",
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

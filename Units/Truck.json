@@ -1,0 +1,43 @@
+{
+  "name": "Truck",
+  "resources": {
+    "Metal": "500",
+    "Smoke": "50",
+  },
+  "data": {
+    "buildTime": "40",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "5",
+        "height": "3",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "250"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "25"
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    },
+    {
+      "kind": "Truck",
+      "data": {
+        "deploy": "ConstructionYard"
+      }
+    }
+  ]
+}

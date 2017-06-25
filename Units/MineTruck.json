@@ -1,0 +1,39 @@
+{
+  "name": "MineTruck",
+  "resources": {
+    "Metal": "100"
+  },
+  "data": {
+    "buildTime": "15",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "5",
+        "height": "3",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "100"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "25"
+      }
+    },
+    {
+      "kind": "MineTruck",
+      "data": {
+        "Metal": "MetalMine",
+        "Smoke": "SmokeMine"
+      }
+    }
+  ]
+}

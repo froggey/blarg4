@@ -1,0 +1,42 @@
+{
+  "name": "Barracks",
+  "resources": {
+    "Metal": "500",
+    "Smoke": "50",
+  },
+  "data": {
+    "buildTime": "10",
+    "buildMode": "buildThenPlace",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "3",
+        "height": "2",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "100"
+      }
+    },
+    {
+      "kind": "Factory",
+      "data": {
+        "build0": "Tank",
+        "build1": "Plane",
+        "build2": "LandRover",
+        "build3": "ZMachine",
+      }
+    },
+    {
+      "kind": "BuildRadius",
+      "data": {
+        "radius": "30",
+      }
+    }
+  ]
+}

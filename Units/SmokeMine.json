@@ -1,0 +1,30 @@
+{
+  "name": "SmokeMine",
+  "resources": {
+    "Metal": "100"
+  },
+  "data": {},
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "10",
+        "height": "8",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "150"
+      }
+    },
+    {
+      "kind": "Mine",
+      "data": {
+        "resource": "Smoke",
+        "rate": "10"
+      }
+    }
+  ]
+}

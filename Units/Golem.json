@@ -1,0 +1,43 @@
+{
+  "name": "Golem",
+  "data": {
+    "buildTime": "10",
+    "buildMode": "spawn",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "3.6",
+        "height": "6.7",
+        "fixedPosition": "false",
+      }
+    },
+    {
+      "kind": "HitscanWeapon",
+      "data": {
+        "range": "1",
+        "damage": "10",
+        "fireRate": "2",
+        "sustainTime": "0",
+        "effect": "Punch",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "250"
+      }
+    },
+    {
+      "kind": "GroundMotor",
+      "data": {
+        "speed": "25",
+      }
+    },
+    {
+      "kind": "BasicUnit",
+      "data": {}
+    }
+  ]
+}

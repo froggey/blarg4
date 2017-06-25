@@ -1,0 +1,14 @@
+{
+  "name": "SmokeSource",
+  "resources": {},
+  "data": {},
+  "components": [
+    {
+      "kind": "ResourceSource",
+      "data": {
+        "resource": "Smoke",
+        "initial": "100000"
+      }
+    }
+  ]
+}

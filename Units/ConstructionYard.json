@@ -1,0 +1,40 @@
+{
+  "name": "ConstructionYard",
+  "resources": {
+    "Metal": "500",
+    "Smoke": "50",
+  },
+  "data": {},
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "8",
+        "height": "8",
+        "fixedPosition": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "500"
+      }
+    },
+    {
+      "kind": "Factory",
+      "data": {
+        "build0": "MineTruck",
+        "build1": "Truck",
+        "build2": "Barracks",
+        "build3": "Turret",
+        "build4": "RailGun",
+      }
+    },
+    {
+      "kind": "BuildRadius",
+      "data": {
+        "radius": "75",
+      }
+    }
+  ]
+}
