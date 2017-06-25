@@ -143,28 +143,10 @@ class PlayerInterface: MonoBehaviour {
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Space) && currentlySelected != null) {
-            var factory = currentlySelected.GetComponent<Factory>();
-            if(factory != null) {
-                factory.Construct();
-            }
-        }
-
         if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
             RaycastHit hit;
             if(currentlySelected != null && cameraSet.Raycast(Input.mousePosition, out hit)) {
-                if(Input.GetKey(KeyCode.Z)) {
-                    var movable = currentlySelected.GetComponent<Movable>();
-                    if(movable != null) {
-                        movable.MoveTo(new Vector2(hit.point.x, hit.point.z));
-                    }
-                    var flyer = currentlySelected.GetComponent<Flyer>();
-                    if(flyer != null) {
-                        flyer.MoveTo(new Vector2(hit.point.x, hit.point.z));
-                    }
-                } else {
-                    DoFire((Game.DVector3)(hit.point + Vector3.up * 0.1f), (Game.DVector3)(currentlySelected.transform.position + Vector3.up * 0.1f));
-                }
+                DoFire((Game.DVector3)(hit.point + Vector3.up * 0.1f), (Game.DVector3)(currentlySelected.transform.position + Vector3.up * 0.1f));
                 var mirror = currentlySelected.GetComponent<UnityInterwork.EntityMirror>();
                 if(mirror != null) {
                     var hit_mirror = hit.collider.GetComponentInParent<UnityInterwork.EntityMirror>();
