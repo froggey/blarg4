@@ -1,0 +1,24 @@
+{
+  "name": "Team",
+  "data": {},
+  "components": [
+    {
+      "kind": "Team",
+      "data": {}
+    },
+    {
+      "kind": "ResourcePool",
+      "data": {
+        "resource": "Metal",
+        "initial": "1000"
+      }
+    },
+    {
+      "kind": "ResourcePool",
+      "data": {
+        "resource": "Smoke",
+        "initial": "1000"
+      }
+    },
+  ]
+}

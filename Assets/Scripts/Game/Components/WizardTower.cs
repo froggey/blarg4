@@ -22,13 +22,6 @@ public class WizardTower: Component {
         wizardBuildCooldownRemaining = wizardBuildCooldown;
     }
 
-    public override void OnCreate() {
-        wizard = World.current.entities
-            .FirstOrDefault(e => {
-                    return e.team == entity.team && e.modelName == wizardPrototype;
-                });
-    }
-
     public override void OnTick() {
         if(harvesterBuildCooldownRemaining > 0) {
             harvesterBuildCooldownRemaining -= World.deltaTime;
@@ -48,6 +41,12 @@ public class WizardTower: Component {
         }
         if(wizard != null && !wizard.isAlive) {
             wizard = null;
+        }
+        if(wizard == null) {
+            wizard = World.current.entities
+                .FirstOrDefault(e => {
+                        return e.team == entity.team && e.modelName == wizardPrototype;
+                    });
         }
         if(wizard == null && wizardBuildCooldownRemaining <= 0) {
             // TODO: Respect the wizard's build mode.

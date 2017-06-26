@@ -24,7 +24,10 @@
       "data": {
         "projectile": "PlasmaBolt",
         "range": "250",
-        "fireRate": "5"
+        "fireRate": "5",
+        "randomOffsetX": "0",
+        "randomOffsetY": "0",
+        "randomOffsetZ": "0",
       }
     },
     {

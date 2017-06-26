@@ -14,6 +14,8 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     WorldManager worldManager;
     MinimapManager minimapManager;
 
+    Comsat comsat;
+
     void Awake() {
         try {
             LoadMap();
@@ -114,11 +116,14 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
 
     void Start() {
         piface = GetComponent<PlayerInterface>();
-        var mr = (UnityInterwork.MapRenderer)Object.FindObjectOfType<UnityInterwork.MapRenderer>();
+
+        comsat = Object.FindObjectOfType<Comsat>();
+
+        var mr = Object.FindObjectOfType<UnityInterwork.MapRenderer>();
         if(mr != null) {
             mr.map = map;
         }
-        var rp = (UnityInterwork.ReachabilityProjector)Object.FindObjectOfType<UnityInterwork.ReachabilityProjector>();
+        var rp = Object.FindObjectOfType<UnityInterwork.ReachabilityProjector>();
         if(rp != null) {
             rp.map = map;
             rp.navigation = navi;
@@ -151,11 +156,7 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     }
 
     void SpawnTeam(int team) {
-        var ent = new Game.Entity(team, new Game.DVector3(0, 0, 0), "Team");
-        ent.AddComponent(new Game.Team(ent));
-        foreach(var id in world.resourceNameToId.Select(kv => kv.Value).OrderBy(x => x)) {
-            ent.AddComponent(new Game.ResourcePool(ent, id, 1000));
-        }
+        world.Instantiate("Team", team, new Game.DVector3(0, 0, 0));
     }
 
     void SpawnMetalSource(int x, int z) {
@@ -214,26 +215,24 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     }
 
     public void StopCommand(UnityInterwork.EntityMirror em) {
-        em.entity.StopCommand();
+        comsat.SendStopCommand(em.entity.eid);
     }
 
     public void MoveCommand(UnityInterwork.EntityMirror em, Vector3 point) {
-        em.entity.MoveCommand((Game.DVector3)point);
+        comsat.SendMoveCommand(em.entity.eid, (Game.DVector3)point);
     }
 
     public void AttackCommand(UnityInterwork.EntityMirror em, UnityInterwork.EntityMirror target) {
-        em.entity.AttackCommand(target.entity);
+        comsat.SendAttackCommand(em.entity.eid, target.entity.eid);
     }
 
     public void DeployCommand(UnityInterwork.EntityMirror em, Vector3 point) {
-        em.entity.DeployCommand((Game.DVector3)point);
+        comsat.SendDeployCommand(em.entity.eid, (Game.DVector3)point);
     }
 
     public void BuildCommand(UnityInterwork.EntityMirror em, int id, Vector3 point) {
-        em.entity.BuildCommand(id, (Game.DVector3)point);
+        comsat.SendBuildCommand(em.entity.eid, id, (Game.DVector3)point);
     }
-
-    float timeSlop = 0.0f;
 
     public UnityEngine.UI.Text resourceBar = null;
     public UnityEngine.UI.Text statusBar = null;
@@ -246,12 +245,6 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
     }
 
     void Update() {
-        timeSlop += Time.deltaTime;
-        while(timeSlop > (float)Game.World.deltaTime) {
-            timeSlop -= (float)Game.World.deltaTime;
-            world.Tick();
-        }
-
         resourceBar.text = string.Format("Metal: {0}  Smoke: {1}",
                                          (int)GetResource(2, "Metal"),
                                          (int)GetResource(2, "Smoke"));

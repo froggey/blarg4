@@ -20,6 +20,15 @@ public class Wizard: Component {
     }
 
     public override void OnTick() {
+        if(tower != null && !tower.isAlive) {
+            tower = null;
+        }
+        if(tower == null) {
+            tower = World.current.entities
+                .FirstOrDefault(e => {
+                        return e.team == entity.team && e.modelName == towerPrototype;
+                    });
+        }
         if(towerBuildCooldownRemaining > 0) {
             towerBuildCooldownRemaining -= World.deltaTime;
         }

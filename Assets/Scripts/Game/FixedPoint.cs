@@ -8,6 +8,7 @@ namespace Game {
 // Fixed point numbers.
 
 [Serializable]
+[ProtoBuf.ProtoContract]
 public struct DReal : IComparable<DReal> {
     private static int fixedShift = 16;
 
@@ -19,6 +20,7 @@ public struct DReal : IComparable<DReal> {
 
     public static DReal Half = ((DReal)1) / 2;
 
+    [ProtoBuf.ProtoMember(1)]
     private long value;
 
     private static DReal Create(long value) {
@@ -298,8 +300,11 @@ public struct DReal : IComparable<DReal> {
 }
 
 [Serializable]
+[ProtoBuf.ProtoContract]
 public struct DVector2 {
+    [ProtoBuf.ProtoMember(1)]
     public DReal x;
+    [ProtoBuf.ProtoMember(2)]
     public DReal y;
 
     public DVector2(DReal x, DReal y) {
@@ -382,9 +387,13 @@ public struct DVector2 {
 }
 
 [Serializable]
+[ProtoBuf.ProtoContract]
 public struct DVector3 {
+    [ProtoBuf.ProtoMember(1)]
     public DReal x;
+    [ProtoBuf.ProtoMember(2)]
     public DReal y;
+    [ProtoBuf.ProtoMember(3)]
     public DReal z;
 
     public DVector3(DReal x, DReal y, DReal z) {

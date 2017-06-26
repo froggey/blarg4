@@ -175,6 +175,10 @@ public class World {
                 comp = new Health(ent, cproto);
             } else if(cproto.kind == "BuildRadius") {
                 comp = new BuildRadius(ent, cproto);
+            } else if(cproto.kind == "Team") {
+                comp = new Team(ent, cproto);
+            } else if(cproto.kind == "ResourcePool") {
+                comp = new ResourcePool(ent, cproto);
             } else {
                 Logger.Log("Unknown component type {0}", cproto.kind);
             }

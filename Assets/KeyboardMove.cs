@@ -55,8 +55,8 @@ class KeyboardMove: MonoBehaviour {
             nCameras = 0;
         }
 
-        var width = (int)Terrain.activeTerrain.terrainData.size.x;
-        var depth = (int)Terrain.activeTerrain.terrainData.size.z;
+        var width = 1024;//(int)Terrain.activeTerrain.terrainData.size.x;
+        var depth = 1024;//(int)Terrain.activeTerrain.terrainData.size.z;
 
         ReinitializeCameras(width, depth);
     }

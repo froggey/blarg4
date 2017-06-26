@@ -24,7 +24,10 @@
       "data": {
         "projectile": "Fireball",
         "range": "100",
-        "fireRate": "1"
+        "fireRate": "1",
+        "randomOffsetX": "0.5",
+        "randomOffsetY": "0.5",
+        "randomOffsetZ": "0.5",
       }
     },
     {

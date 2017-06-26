@@ -14,10 +14,16 @@ public class ProjectileWeapon: Component, IWeapon {
 
     public Collider collider;
 
+    public DVector3 randomOffset;
+
     public ProjectileWeapon(Entity entity, ComponentPrototype proto): base(entity) {
         projectile = proto.data["projectile"];
         range = DReal.Parse(proto.data["range"]);
         fireRate = DReal.Parse(proto.data["fireRate"]);
+
+        randomOffset = new DVector3(DReal.Parse(proto.data["randomOffsetX"]),
+                                    DReal.Parse(proto.data["randomOffsetY"]),
+                                    DReal.Parse(proto.data["randomOffsetZ"]));
 
         fireTime = 0;
     }
@@ -61,9 +67,9 @@ public class ProjectileWeapon: Component, IWeapon {
             projectile_spawn += entity.faceDirection * collider.radius;
         }
         // Offset the origin slightly to make it less repetative.
-        projectile_spawn += new DVector3(World.current.RandomRange(-1,1),
-                                         World.current.RandomRange(-1,1),
-                                         World.current.RandomRange(-1,1));
+        projectile_spawn += new DVector3(randomOffset.x * World.current.RandomRange(-1,1),
+                                         randomOffset.y * World.current.RandomRange(-1,1),
+                                         randomOffset.z * World.current.RandomRange(-1,1));
 
         var dir = World.current.map.Direction(projectile_spawn, target_position);
 
