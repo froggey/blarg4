@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System;
 using ProtoBuf;
 
 [ProtoContract]
@@ -97,7 +101,40 @@ public class NetworkMessage {
     public int buildId;
 }
 
-class Comsat: MonoBehaviour {
+interface IComSatListener {
+    void ComSatConnectionStateChanged(ComSat.ConnectionState newState);
+}
+
+class ComSat: MonoBehaviour {
+    public static ComSat instance { get; private set; }
+
+    string _localPlayerName;
+    public string localPlayerName {
+        get { return _localPlayerName; }
+        set {
+            _localPlayerName = value;
+        }
+    }
+
+    void Awake() {
+        if(ComSat.instance == null) {
+            ComSat.instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
+    List<IComSatListener> listeners = new List<IComSatListener>();
+
+    public void AddListener(IComSatListener l) {
+        listeners.Add(l);
+    }
+
+    public void RemoveListener(IComSatListener l) {
+        listeners.Remove(l);
+    }
+
     public int localPlayerId;
 
     void HandleMessageClient(NetworkMessage message) {
@@ -195,6 +232,20 @@ class Comsat: MonoBehaviour {
     }
 
     void Update() {
+        if(!inGame) {
+            return;
+        }
+
+        if(mustSendInitialReadyUp) {
+            // augh. wait for testshit to create the world.
+            var testshit = UnityEngine.Object.FindObjectOfType<Testshit>();
+            if(testshit == null || testshit.world == null) {
+                return;
+            }
+            SendReadyUp();
+            mustSendInitialReadyUp = false;
+        }
+
         if(fakeLocalReady) {
             var m = new NetworkMessage(NetworkMessage.Type.NextTurn);
             HandleMessageClient(m);
@@ -221,10 +272,6 @@ class Comsat: MonoBehaviour {
     public int fakeLocalTeam = 1;
     public bool fakeLocalReady = false;
 
-    void Start() {
-        SendReadyUp();
-    }
-
     void SendToServer(NetworkMessage message) {
         // server emulation.
         if(message.type == NetworkMessage.Type.Ready) {
@@ -250,6 +297,8 @@ class Comsat: MonoBehaviour {
     // Commands.
     public void SendReadyUp() {
         var message = new NetworkMessage(NetworkMessage.Type.Ready);
+        message.checksum = Game.World.current.Checksum();
+        Debug.Log("Checksum is " + message.checksum);
         SendToServer(message);
     }
 
@@ -286,5 +335,102 @@ class Comsat: MonoBehaviour {
         message.buildId = buildId;
         message.position = point;
         SendToServer(message);
+    }
+
+    //
+    // NETWORKING CRAP.
+    //
+
+    public enum ConnectionState {
+        Disconnected,
+        Connecting,
+        Connected,
+    }
+
+    ConnectionState _connectionState = ConnectionState.Disconnected;
+    public ConnectionState connectionState {
+        get { return _connectionState; }
+        private set {
+            _connectionState = value;
+            foreach(var l in listeners) {
+                l.ComSatConnectionStateChanged(value);
+            }
+        }
+    }
+
+    public bool isHost { get; private set; }
+    public bool inGame { get; private set; }
+
+    bool mustSendInitialReadyUp;
+
+    // SERVER-SPECIFIC NETWORKING CRAP.
+    private int nextClientID;
+    private Socket listenSocket;
+
+    // Public interface, the lobby calls this to host.
+    public void Host(int port) {
+        if(connectionState != ConnectionState.Disconnected) {
+            Debug.LogError("Tried to host a server when already connected.");
+            return;
+        }
+
+        var localEP = new IPEndPoint(IPAddress.Any, port);
+        listenSocket = new Socket(localEP.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        Debug.Log("Listening on " + localEP);
+
+        try {
+            listenSocket.Bind(localEP);
+            listenSocket.Listen(10);
+            //listenSocket.BeginAccept(new AsyncCallback(AsyncClientConnect), listenSocket);
+        } catch(Exception e) {
+            Debug.LogError("Failed to start server on " + localEP);
+            Debug.LogException(e, this);
+            listenSocket = null;
+            throw;
+        }
+
+        isHost = true;
+        connectionState = ConnectionState.Connected;
+
+        nextClientID = 1;
+    }
+
+    // Returns true if all players have readied in the lobby.
+    public bool PlayersAreReady() {
+        return true; // host always ready.
+    }
+
+    public void StartGame() {
+        if(!PlayersAreReady()) {
+            return;
+        }
+
+        Application.LoadLevel("Game");
+        inGame = true;
+        mustSendInitialReadyUp = true;
+    }
+
+    // CLIENT-SPECIFIC NETWORKING CRAP.
+    public void Connect(string host, int port) {
+    }
+
+    public void ToggleReady() {
+    }
+
+    // Drop from the server and return to the lobby.
+    // Kills the server if hosting.
+    public void Disconnect() {
+        if(connectionState == ConnectionState.Disconnected) {
+            return;
+        }
+        if(isHost) {
+            listenSocket.Close();
+            listenSocket = null;
+        } else {
+        }
+
+        connectionState = ConnectionState.Disconnected;
+        inGame = false;
+        Application.LoadLevel("Lobby");
     }
 }

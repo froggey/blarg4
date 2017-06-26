@@ -19,7 +19,6 @@ public class WizardTower: Component {
         harvesterBuildCooldown = DReal.Parse(World.current.entityPrototypes[harvesterPrototype].data["buildTime"]);
         wizardPrototype = proto.data["wizard"];
         wizardBuildCooldown = DReal.Parse(World.current.entityPrototypes[harvesterPrototype].data["buildTime"]);
-        wizardBuildCooldownRemaining = wizardBuildCooldown;
     }
 
     public override void OnTick() {
