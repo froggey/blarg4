@@ -28,7 +28,7 @@ class HitscanEffect: MonoBehaviour {
         if(ps != null) {
             if(burst) {
                 transform.position = (Vector3)target.position + positionAdjust;
-                Destroy(gameObject, ps.duration);
+                Destroy(gameObject, ps.main.duration);
             } else {
                 UpdateParticleOriginDirection();
                 Destroy(gameObject, duration);

@@ -114,6 +114,17 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
 
     PlayerInterface piface;
 
+    int[] teamX = { 256, 768, 256, 768 };
+    int[] teamY = { 256, 256, 768, 768 };
+
+    bool HaveTeam(int team) {
+        if(ComSat.instance == null) {
+            return true;
+        } else {
+            return ComSat.instance.players.Any(p => p.team == team);
+        }
+    }
+
     void Start() {
         piface = GetComponent<PlayerInterface>();
 
@@ -132,10 +143,11 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         LoadResources();
         LoadUnits();
 
-        SpawnTeam(1);
-        SpawnTeam(2);
-        SpawnTeam(3);
-        SpawnTeam(4);
+        for(var team = 1; team <= 4; team += 1) {
+            if(HaveTeam(team)) {
+                SpawnTeam(team);
+            }
+        }
 
         world.Tick();
 
@@ -149,10 +161,31 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
         SpawnSmokeSource(768, 832);
         SpawnSmokeSource(256, 832);
 
-        SpawnWizard(256, 256, 1);
-        SpawnTruck(768, 256, 2);
-        SpawnTruck(256, 768, 3);
-        SpawnWizard(768, 768, 4);
+        if(ComSat.instance == null) {
+            for(var team = 1; team <= 4; team += 1) {
+                if((team & 1) == 0) {
+                    SpawnTruck(teamX[team-1], teamY[team-1], team);
+                } else {
+                    SpawnWizard(teamX[team-1], teamY[team-1], team);
+                }
+            }
+        } else {
+            var spawned_teams = new List<int>();
+
+            foreach(var player in ComSat.instance.players.OrderBy(p => p.id)) {
+                if(player.team == -1) {
+                    continue;
+                }
+                if(spawned_teams.Contains(player.team)) {
+                    continue;
+                }
+                if(player.faction == 1) {
+                    SpawnTruck(teamX[player.team-1], teamY[player.team-1], player.team);
+                } else {
+                    SpawnWizard(teamX[player.team-1], teamY[player.team-1], player.team);
+                }
+            }
+        }
     }
 
     void SpawnTeam(int team) {
@@ -274,16 +307,27 @@ class Testshit: MonoBehaviour, Game.IWorldEventListener {
             }
         }
 
-        resourceBar.text = string.Format("Metal: {0}  Smoke: {1}",
-                                         (int)GetResource(2, "Metal"),
-                                         (int)GetResource(2, "Smoke"));
+        var team = 1;
+        if(ComSat.instance != null) {
+            team = ComSat.instance.localPlayer.team;
+        }
+
+        if(team != -1) {
+            resourceBar.text = string.Format("Metal: {0}  Smoke: {1}",
+                                             (int)GetResource(team, "Metal"),
+                                             (int)GetResource(team, "Smoke"));
+        }
     }
 
     Dictionary<int, Color> teamColours = new Dictionary<int, Color>();
 
     public Color TeamColour(int team) {
-        if(team <= 0) {
-            return Color.white;
+        switch(team) {
+        case 0: return Color.white;
+        case 1: return Color.green;
+        case 2: return Color.red;
+        case 3: return Color.blue;
+        case 4: return Color.yellow;
         }
         if(!teamColours.ContainsKey(team)) {
             teamColours.Add(team, Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f));

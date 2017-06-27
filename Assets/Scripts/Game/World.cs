@@ -31,7 +31,12 @@ public class World {
     public DReal time { get { return currentTick * deltaTime; } }
 
     public Entity IdToEntity(int eid) {
-        return eidToEntityMap[eid];
+        Entity result;
+        if(eidToEntityMap.TryGetValue(eid, out result)) {
+            return result;
+        } else {
+            return null;
+        }
     }
 
     public static World current { get; private set; }
@@ -49,9 +54,11 @@ public class World {
         current = this;
     }
 
+    uint randomValue = 0;
+
     public DReal RandomValue() {
-        // FIXME.
-        return (DReal)UnityEngine.Random.value;
+        randomValue = 22695477 * randomValue + 1;
+        return ((DReal)randomValue / 0x10000) % 1; // dreal has a 16 bit fractional part.
     }
 
     public DReal RandomRange(DReal min, DReal max) {
@@ -266,6 +273,7 @@ public class World {
 
     public uint Checksum() {
         uint sum = 0;
+        sum ^= randomValue;
         sum ^= (uint)currentTick;
         sum ^= map.Checksum();
         sum ^= (uint)_entities.Count;

@@ -3,7 +3,7 @@ using UnityEngine;
 class Bob: MonoBehaviour {
     public Vector3 amplitude = Vector3.zero;
     public Vector3 frequency = Vector3.zero;
-    public float offset = 0.0f;
+    public Vector3 offset = Vector3.zero;
 
     Vector3 origin;
 
@@ -12,10 +12,10 @@ class Bob: MonoBehaviour {
     }
 
     void Update() {
-        var foo = frequency * (Time.time + offset);
-        var bar = new Vector3(Mathf.Sin(foo.x),
-                              Mathf.Sin(foo.y),
-                              Mathf.Sin(foo.z));
+        var foo = frequency * Time.time;
+        var bar = new Vector3(Mathf.Sin(foo.x + offset.x * Mathf.Deg2Rad),
+                              Mathf.Sin(foo.y + offset.y * Mathf.Deg2Rad),
+                              Mathf.Sin(foo.z + offset.z * Mathf.Deg2Rad));
         var baz = new Vector3(bar.x * amplitude.x,
                               bar.y * amplitude.y,
                               bar.z * amplitude.z);

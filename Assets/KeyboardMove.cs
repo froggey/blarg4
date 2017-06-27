@@ -74,12 +74,14 @@ class KeyboardMove: MonoBehaviour {
     }
 
     void Update() {
+        /*
         if(Input.GetKey(KeyCode.LeftControl)) {
             currentZoom += Time.deltaTime * zoomSpeed;
         }
         if(Input.GetKey(KeyCode.LeftShift)) {
             currentZoom -= Time.deltaTime * zoomSpeed;
         }
+        */
         currentZoom = Mathf.Clamp01(currentZoom);
         currentAngle = angleCurve.Evaluate(currentZoom);
         currentFov = fovCurve.Evaluate(currentZoom);
@@ -120,7 +122,8 @@ class KeyboardMove: MonoBehaviour {
         var x = Mathf.Repeat(transform.position.x + twidth/2, twidth) - twidth/2;
         var z = Mathf.Repeat(transform.position.z + tdepth/2, tdepth) - tdepth/2;
 
-        var y = Mathf.Max(heightCurve.Evaluate(currentZoom), Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z)) + 15.0f);
+        //var y = Mathf.Max(heightCurve.Evaluate(currentZoom), Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z)) + 15.0f);
+        var y = 140;
         transform.position = new Vector3(x, y, z);
     }
 }

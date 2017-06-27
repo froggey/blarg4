@@ -22,9 +22,22 @@ class NetworkConnectPanel: MonoBehaviour, IComSatListener {
         quitButton.onClick.AddListener(DoQuit);
     }
 
-    public void ComSatConnectionStateChanged(ComSat.ConnectionState newState) {
-        gameObject.SetActive(newState == ComSat.ConnectionState.Disconnected);
+    void OnDestroy() {
+        ComSat.instance.RemoveListener(this);
     }
+
+    public void ComSatConnectionStateChanged(ComSat.ConnectionState newState) {
+        if(newState == ComSat.ConnectionState.Disconnected) {
+            playerName.text = ComSat.instance.localPlayerName;
+            gameObject.SetActive(true);
+        } else {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void ComSatPlayerJoined(Player player) {}
+    public void ComSatPlayerChanged(Player player) {}
+    public void ComSatPlayerLeft(Player player) {}
 
     void UpdatePlayerName(string text) {
         Debug.Log("Change player name to " + playerName.text);
@@ -41,6 +54,6 @@ class NetworkConnectPanel: MonoBehaviour, IComSatListener {
     }
 
     void DoQuit() {
-        Debug.Log("quit!");
+        Application.Quit();
     }
 }

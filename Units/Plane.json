@@ -24,7 +24,10 @@
       "data": {
         "projectile": "Missile",
         "range": "100",
-        "fireRate": "1"
+        "fireRate": "1",
+        "randomOffsetX": "0",
+        "randomOffsetY": "0",
+        "randomOffsetZ": "0",
       }
     },
     {

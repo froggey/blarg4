@@ -88,9 +88,9 @@ class WorldManager: MonoBehaviour, Game.IWorldEventListener {
     }
 
     public void Animate(Game.Entity e, string animation) {
-        entityToUnity1[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity2[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity3[e].gameObject.SendMessage("Animation" + animation);
-        entityToUnity4[e].gameObject.SendMessage("Animation" + animation);
+        entityToUnity1[e].gameObject.SendMessage("Animation" + animation, SendMessageOptions.DontRequireReceiver);
+        entityToUnity2[e].gameObject.SendMessage("Animation" + animation, SendMessageOptions.DontRequireReceiver);
+        entityToUnity3[e].gameObject.SendMessage("Animation" + animation, SendMessageOptions.DontRequireReceiver);
+        entityToUnity4[e].gameObject.SendMessage("Animation" + animation, SendMessageOptions.DontRequireReceiver);
     }
 }
