@@ -60,7 +60,7 @@ class MinimapManager: MonoBehaviour, Game.IWorldEventListener {
 
     void Update() {
         minimapController.xoff = map.width / 2 - theCamera.lookPoint.x;
-        minimapController.zoff = map.width / 2 - theCamera.lookPoint.z;
+        minimapController.zoff = map.depth / 2 - theCamera.lookPoint.z;
         minimapTerrain.uvRect = new Rect(-minimapController.xoff / map.width,
                                          -minimapController.zoff / map.depth,
                                          1,1);

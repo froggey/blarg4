@@ -29,7 +29,6 @@ class HealthMirror: MonoBehaviour {
         }
     }
 
-    // FIXME: This should use all cameras and use the most sensible result.
     void UpdateBarPosition() {
         var viewport_position = Camera.main.WorldToViewportPoint(transform.position);
         var screen_position = new Vector2(

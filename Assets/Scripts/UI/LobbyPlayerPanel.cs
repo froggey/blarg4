@@ -80,6 +80,7 @@ class LobbyPlayerPanel: MonoBehaviour {
         default: colorblock.normalColor = Color.white; break;
         }
         colorblock.highlightedColor = colorblock.normalColor;
+        colorblock.disabledColor = colorblock.normalColor / 1.6f;
         teamButton.colors = colorblock;
     }
 }

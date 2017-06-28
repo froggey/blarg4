@@ -40,21 +40,45 @@ class HitscanEffect: MonoBehaviour {
             Destroy(gameObject, burst ? burstDuration : duration);
             UpdateLightningPosition();
         }
+
+        if(lr == null && ps == null && lightning == null) {
+            Destroy(gameObject);
+        }
+    }
+
+    Vector3 CorrectedEntityPosition() {
+        return (Vector3)weapon.entity.position + positionAdjust;
+    }
+
+    Vector3 CorrectedTargetPosition() {
+        var adjTarget = (Vector3)target.position + positionAdjust;
+        var diff = adjTarget - CorrectedEntityPosition();
+        if(diff.x > 512) {
+            diff.x -= 1024;
+        } else if(diff.x < -512) {
+            diff.x += 1024;
+        }
+        if(diff.z > 512) {
+            diff.z -= 1024;
+        } else if(diff.z < -512) {
+            diff.z += 1024;
+        }
+        return CorrectedEntityPosition() + diff;
     }
 
     void UpdateLinePosition() {
-        lr.SetPosition(0, (Vector3)weapon.entity.position + positionAdjust);
-        lr.SetPosition(1, (Vector3)target.position + positionAdjust);
+        lr.SetPosition(0, CorrectedEntityPosition());
+        lr.SetPosition(1, CorrectedTargetPosition());
     }
 
     void UpdateLightningPosition() {
-        lightning.origin = (Vector3)weapon.entity.position + positionAdjust;
-        lightning.target = (Vector3)target.position + positionAdjust;
+        lightning.origin = CorrectedEntityPosition();
+        lightning.target = CorrectedTargetPosition();
     }
 
     void UpdateParticleOriginDirection() {
-        transform.position = (Vector3)weapon.entity.position + positionAdjust;
-        transform.rotation = Quaternion.LookRotation((Vector3)target.position - (Vector3)weapon.entity.position);
+        transform.position = CorrectedEntityPosition();
+        transform.rotation = Quaternion.LookRotation(CorrectedTargetPosition() - CorrectedEntityPosition());
     }
 
     void Update() {

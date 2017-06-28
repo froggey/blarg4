@@ -14,9 +14,10 @@ class ReplicatedTerrain: MonoBehaviour {
     }
 
     void Start() {
-        SpawnTerrain(-1024, -128, -1024);
-        SpawnTerrain(-1024, -128, 0);
-        SpawnTerrain(0, -128, -1024);
-        SpawnTerrain(0, -128, 0);
+        for(var x = -1; x <= 1; x += 1) {
+            for(var z = -1; z <= 1; z += 1) {
+                SpawnTerrain(x * 1024, -128, z * 1024);
+            }
+        }
     }
 }

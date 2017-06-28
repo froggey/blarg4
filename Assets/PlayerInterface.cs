@@ -14,8 +14,6 @@ class PlayerInterface: MonoBehaviour {
         uiManager = Object.FindObjectOfType<ListController>();
     }
 
-    GameObject currentlySelected = null;
-
     Game.DReal timeStep = (Game.DReal)1 / 25;
     public Game.DReal projSpeed = 10;
 
@@ -86,6 +84,8 @@ class PlayerInterface: MonoBehaviour {
     public System.Func<Vector3, bool> placement_valid_cb;
     public System.Action placement_cancel_cb;
 
+    UnityInterwork.EntityMirror currentlySelected = null;
+
     void Update() {
         if(placement_go != null) {
             RaycastHit hit;
@@ -115,41 +115,45 @@ class PlayerInterface: MonoBehaviour {
                     }
                 }
             }
-            return;
-        }
-
-        if(Input.GetMouseButtonDown(0) && !IsMouseOverUiElement()) {
-            RaycastHit hit;
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
-                var next = hit.collider.GetComponentInParent<Selectable>();
-                if(next == null) {
-                    if(currentlySelected != null) {
-                        currentlySelected.SendMessage("OnDeselect");
-                        currentlySelected = null;
-                        uiManager.ChangeSelected(null);
-                    }
-                } else {
-                    if(next.gameObject != currentlySelected) {
+        } else {
+            if(Input.GetMouseButtonDown(0) && !IsMouseOverUiElement()) {
+                RaycastHit hit;
+                if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+                    var next = hit.collider.GetComponentInParent<Selectable>();
+                    if(next == null) {
                         if(currentlySelected != null) {
-                            currentlySelected.SendMessage("OnDeselect");
+                            currentlySelected.gameObject.SendMessage("OnDeselect");
+                            currentlySelected = null;
+                            uiManager.ChangeSelected(null);
                         }
-                        next.gameObject.SendMessage("OnSelect");
-                        currentlySelected = next.gameObject;
-                        uiManager.ChangeSelected(currentlySelected);
+                    } else {
+                        var mirror = next.GetComponent<UnityInterwork.EntityMirror>();
+                        while(mirror.parent != null) {
+                            mirror = mirror.parent;
+                        }
+                        if(mirror != currentlySelected) {
+                            if(currentlySelected != null) {
+                                currentlySelected.gameObject.SendMessage("OnDeselect");
+                            }
+                            mirror.SendMessage("OnSelect");
+                            currentlySelected = mirror;
+                            uiManager.ChangeSelected(mirror.gameObject);
+                        }
                     }
                 }
             }
-        }
 
-        if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
-            RaycastHit hit;
-            if(currentlySelected != null && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
-                var mirror = currentlySelected.GetComponent<UnityInterwork.EntityMirror>();
-                if(mirror != null) {
+            if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
+                RaycastHit hit;
+                if(currentlySelected != null && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+                    var mirror = currentlySelected;
                     var hit_mirror = hit.collider.GetComponentInParent<UnityInterwork.EntityMirror>();
                     if(hit_mirror == null) {
                         testshit.MoveCommand(mirror, hit.point);
                     } else {
+                        while(hit_mirror.parent != null) {
+                            hit_mirror = hit_mirror.parent;
+                        }
                         testshit.AttackCommand(mirror, hit_mirror);
                     }
                 }

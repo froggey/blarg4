@@ -60,8 +60,8 @@ class KeyboardMove: MonoBehaviour {
         // Wrap to terrain.
         var twidth = Terrain.activeTerrain.terrainData.size.x;
         var tdepth = Terrain.activeTerrain.terrainData.size.z;
-        var x = Mathf.Repeat(transform.position.x + twidth/2, twidth) - twidth/2;
-        var z = Mathf.Repeat(transform.position.z + tdepth/2, tdepth) - tdepth/2;
+        var x = Mathf.Repeat(transform.position.x, twidth);
+        var z = Mathf.Repeat(transform.position.z, tdepth);
 
         var y = heightCurve.Evaluate(currentZoom);
         transform.position = new Vector3(x, y, z);
