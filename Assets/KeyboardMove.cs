@@ -19,14 +19,12 @@ class KeyboardMove: MonoBehaviour {
     public Vector3 lookPoint;
 
     void Update() {
-        /*
         if(Input.GetKey(KeyCode.LeftControl)) {
             currentZoom += Time.deltaTime * zoomSpeed;
         }
         if(Input.GetKey(KeyCode.LeftShift)) {
             currentZoom -= Time.deltaTime * zoomSpeed;
         }
-        */
         currentZoom = Mathf.Clamp01(currentZoom);
         currentAngle = angleCurve.Evaluate(currentZoom);
         currentFov = fovCurve.Evaluate(currentZoom);
@@ -43,8 +41,6 @@ class KeyboardMove: MonoBehaviour {
         if(Input.GetKey(KeyCode.A)) {
             transform.Translate(-Vector3.right * Time.deltaTime * speed);
         }
-        // TODO: Use RotateAround instead to rotate around the point being looked at.
-        // Raycasting to find the point won't work as that may miss the terrain...
         var spin = 0.0f;
         if(Input.GetKey(KeyCode.E)) {
             spin += 1.0f;
@@ -67,8 +63,7 @@ class KeyboardMove: MonoBehaviour {
         var x = Mathf.Repeat(transform.position.x + twidth/2, twidth) - twidth/2;
         var z = Mathf.Repeat(transform.position.z + tdepth/2, tdepth) - tdepth/2;
 
-        //var y = Mathf.Max(heightCurve.Evaluate(currentZoom), Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z)) + 15.0f);
-        var y = 140;
+        var y = heightCurve.Evaluate(currentZoom);
         transform.position = new Vector3(x, y, z);
     }
 }
