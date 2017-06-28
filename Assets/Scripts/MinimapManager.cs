@@ -59,11 +59,11 @@ class MinimapManager: MonoBehaviour, Game.IWorldEventListener {
     }
 
     void Update() {
-        minimapController.xoff = theCamera.transform.position.x;
-        minimapController.zoff = theCamera.transform.position.z;
+        minimapController.xoff = 512 - theCamera.lookPoint.x;
+        minimapController.zoff = 512 - theCamera.lookPoint.z;
         minimapTerrain.uvRect = new Rect(-minimapController.xoff / map.width,
                                          -minimapController.zoff / map.depth,
                                          1,1);
-        minimapTransform.eulerAngles = new Vector3(0,0,theCamera.currentRotation);
+        minimapTransform.eulerAngles = new Vector3(0,0,theCamera.transform.eulerAngles.y);
     }
 }

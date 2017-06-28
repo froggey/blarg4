@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 class PlayerInterface: MonoBehaviour {
-    KeyboardMove cameraSet = null;
     Game.Navigation navMesh = null;
     Testshit testshit = null;
     ListController uiManager = null;
@@ -10,7 +9,6 @@ class PlayerInterface: MonoBehaviour {
     public RectTransform screenCanvas = null;
 
     void Start() {
-        cameraSet = Object.FindObjectOfType<KeyboardMove>();
         testshit = Object.FindObjectOfType<Testshit>();
         navMesh = Object.FindObjectOfType<Testshit>().navi;
         uiManager = Object.FindObjectOfType<ListController>();
@@ -91,7 +89,7 @@ class PlayerInterface: MonoBehaviour {
     void Update() {
         if(placement_go != null) {
             RaycastHit hit;
-            var hit_ok = cameraSet.Raycast(Input.mousePosition, out hit, Mathf.Infinity, 1<<9); // terrain only
+            var hit_ok = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1<<9); // terrain only
             if(!IsMouseOverUiElement()) {
                 if(Input.GetMouseButtonDown(1)) {
                     Destroy(placement_go);
@@ -122,7 +120,7 @@ class PlayerInterface: MonoBehaviour {
 
         if(Input.GetMouseButtonDown(0) && !IsMouseOverUiElement()) {
             RaycastHit hit;
-            if(cameraSet.Raycast(Input.mousePosition, out hit)) {
+            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
                 var next = hit.collider.GetComponentInParent<Selectable>();
                 if(next == null) {
                     if(currentlySelected != null) {
@@ -145,7 +143,7 @@ class PlayerInterface: MonoBehaviour {
 
         if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
             RaycastHit hit;
-            if(currentlySelected != null && cameraSet.Raycast(Input.mousePosition, out hit)) {
+            if(currentlySelected != null && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
                 var mirror = currentlySelected.GetComponent<UnityInterwork.EntityMirror>();
                 if(mirror != null) {
                     var hit_mirror = hit.collider.GetComponentInParent<UnityInterwork.EntityMirror>();
