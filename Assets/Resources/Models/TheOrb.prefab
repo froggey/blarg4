@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1078453599351652}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 232.52145, y: 24.170938, z: 839.14276}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4974964105821646}
@@ -177,7 +177,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: a07de160c78cd4cc798b60ec62686806, type: 2}
+  - {fileID: 2100000, guid: 50f4745115d094df4a966a5887e79ff7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -296,6 +296,7 @@ MonoBehaviour:
     type: 2}
   resourceBarPrefab: {fileID: 1995834837967156, guid: bef4b4461cae540699a4146d7d1afa53,
     type: 2}
+  parent: {fileID: 0}
 --- !u!114 &114608112066965168
 MonoBehaviour:
   m_ObjectHideFlags: 1
