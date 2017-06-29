@@ -242,6 +242,20 @@ public struct DReal : IComparable<DReal> {
         return this < other ? -1 : this > other ? 1 : 0;
     }
 
+    public static DReal Clamp01(DReal value) {
+        return Clamp(value, 0, 1);
+    }
+
+    public static DReal Clamp(DReal value, DReal min, DReal max) {
+        if(value < min) {
+            return min;
+        } else if(value > max) {
+            return max;
+        } else {
+            return value;
+        }
+    }
+
     public static DReal Repeat(DReal value, DReal length) {
         var val = value % length;
         if(val < 0) {

@@ -94,7 +94,10 @@ public class Entity {
 
     // Range to target, adjusted by collider size.
     public DReal Range(Entity target) {
-        var dist = World.current.map.Distance(position, target.position);
+        var ent2d = new DVector3(position.x, 0, position.z);
+        var targ2d = new DVector3(target.position.x, 0, target.position.z);
+
+        var dist = World.current.map.Distance(ent2d, targ2d);
         var local_collider = GetComponent<Collider>();
         if(local_collider != null) {
             dist -= local_collider.radius;
