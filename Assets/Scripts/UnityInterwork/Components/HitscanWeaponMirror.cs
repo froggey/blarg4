@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class HitscanWeaponMirror: MonoBehaviour {
+class HitscanWeaponMirror: InterworkComponent {
     public Game.HitscanWeapon component;
 
     void Start() {

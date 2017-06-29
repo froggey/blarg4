@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class BasicUnitMirror: MonoBehaviour {
+class BasicUnitMirror: InterworkComponent {
     public Game.BasicUnit component;
 
     void OnDrawGizmosSelected() {

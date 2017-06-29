@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class TruckMirror: MonoBehaviour {
+class TruckMirror: InterworkComponent {
     public Game.Truck component;
 
     Testshit testshit = null;

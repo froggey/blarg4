@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class PartialBuildingMirror: MonoBehaviour {
+class PartialBuildingMirror: InterworkComponent {
     public Game.PartialBuilding component;
 
     // This is set automatically by EntityMirror...

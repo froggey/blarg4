@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class ProjectileWeaponMirror: MonoBehaviour {
+class ProjectileWeaponMirror: InterworkComponent {
     public Game.ProjectileWeapon component;
 
     void Start() {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class BuildRadiusMirror: MonoBehaviour {
+class BuildRadiusMirror: InterworkComponent {
     public Game.BuildRadius component;
 
     void OnDrawGizmosSelected() {

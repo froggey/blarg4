@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class ResourceHarvesterMirror: MonoBehaviour {
+class ResourceHarvesterMirror: InterworkComponent {
     public Game.ResourceHarvester component;
 
     // This is set automatically by EntityMirror...

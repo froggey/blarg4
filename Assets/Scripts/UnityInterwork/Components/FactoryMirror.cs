@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class FactoryMirror: MonoBehaviour {
+class FactoryMirror: InterworkComponent {
     public Game.Factory component;
     public string[] buildables;
 

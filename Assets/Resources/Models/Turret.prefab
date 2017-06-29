@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 136695814989068104}
   - component: {fileID: 65864531972620726}
   - component: {fileID: 114238224723228252}
+  - component: {fileID: 54861602108258132}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -379,6 +380,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1164347800843834}
   m_Mesh: {fileID: 4300002, guid: 8e87a1f3d740842e996a312799dd4380, type: 3}
+--- !u!54 &54861602108258132
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1206728448829546}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &65864531972620726
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -446,6 +462,7 @@ MonoBehaviour:
     type: 2}
   resourceBarPrefab: {fileID: 1995834837967156, guid: bef4b4461cae540699a4146d7d1afa53,
     type: 2}
+  parent: {fileID: 0}
 --- !u!136 &136695814989068104
 CapsuleCollider:
   m_ObjectHideFlags: 1

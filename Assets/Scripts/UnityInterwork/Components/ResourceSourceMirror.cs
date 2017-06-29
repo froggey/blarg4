@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class ResourceSourceMirror: MonoBehaviour {
+class ResourceSourceMirror: InterworkComponent {
     public Game.ResourceSource component;
     public float remainingCount;
     public bool occupied;

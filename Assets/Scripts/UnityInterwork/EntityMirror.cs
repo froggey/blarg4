@@ -28,6 +28,8 @@ class EntityMirror: MonoBehaviour {
     Vector3 currentRotation;
     Vector3 nextRotation;
 
+    Rigidbody rb;
+
     void UpdateTeamColour() {
         if(currentTeamColour != entity.team) {
             foreach(var mr in GetComponentsInChildren<Renderer>()) {
@@ -41,6 +43,8 @@ class EntityMirror: MonoBehaviour {
         if(entity == null) {
             return;
         }
+
+        rb = GetComponent<Rigidbody>();
 
         testshit = Object.FindObjectOfType<Testshit>();
 
@@ -101,6 +105,8 @@ class EntityMirror: MonoBehaviour {
                     m.resourceBarPrefab = resourceBarPrefab;
                     m.canvasTransform = Object.FindObjectOfType<PlayerInterface>().screenCanvas;
                     m.component = (Game.PartialBuilding)comp;
+                    // Don't do the death animation.
+                    rb = null;
                 } else if(comp is Game.WizardTower) {
                     var m = gameObject.AddComponent<WizardTowerMirror>();
                     m.component = (Game.WizardTower)comp;
@@ -132,6 +138,8 @@ class EntityMirror: MonoBehaviour {
                     m.resourceBarPrefab = resourceBarPrefab;
                     m.canvasTransform = Object.FindObjectOfType<PlayerInterface>().screenCanvas;
                     m.component = (Game.PartialBuilding)comp;
+                    // Don't do the death animation.
+                    rb = null;
                 }
             }
         }
@@ -218,7 +226,24 @@ class EntityMirror: MonoBehaviour {
                 children[i].Destroyed();
             }
         }
-        Destroy(gameObject);
+        if(rb == null) {
+            Destroy(gameObject);
+        } else {
+            entity = null;
+            foreach(var comp in GetComponentsInChildren<InterworkComponent>()) {
+                Destroy(comp);
+            }
+            foreach(var comp in GetComponentsInChildren<Selectable>()) {
+                Destroy(comp);
+            }
+            foreach(var comp in GetComponentsInChildren<UnityEngine.Collider>()) {
+                Destroy(comp);
+            }
+            rb.isKinematic = false;
+            rb.AddForce(Vector3.up * 20, ForceMode.VelocityChange);
+            rb.angularVelocity = Random.insideUnitSphere * 40;
+            Destroy(gameObject, 10);
+        }
     }
 }
 

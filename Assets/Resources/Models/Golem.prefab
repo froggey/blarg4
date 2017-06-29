@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 114359434181734130}
   - component: {fileID: 114141388873890848}
   - component: {fileID: 114214227437879414}
+  - component: {fileID: 54254348407546092}
   m_Layer: 0
   m_Name: Golem
   m_TagString: MultiSelectableUnit
@@ -182,6 +183,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1038703240772564}
   m_Mesh: {fileID: 4300002, guid: 87147be50c3914e59b44be811472f66a, type: 3}
+--- !u!54 &54254348407546092
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1614905092757196}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &65412749992953284
 BoxCollider:
   m_ObjectHideFlags: 1

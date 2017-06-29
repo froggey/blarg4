@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class WizardMirror: MonoBehaviour {
+class WizardMirror: InterworkComponent {
     public Game.Wizard component;
 
     Testshit testshit = null;

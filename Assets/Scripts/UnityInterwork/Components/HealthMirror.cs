@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class HealthMirror: MonoBehaviour {
+class HealthMirror: InterworkComponent {
     public Game.Health component;
 
     // This is set automatically by EntityMirror...

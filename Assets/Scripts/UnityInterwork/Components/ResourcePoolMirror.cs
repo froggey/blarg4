@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class ResourcePoolMirror: MonoBehaviour {
+class ResourcePoolMirror: InterworkComponent {
     public Game.ResourcePool component;
     public float fill;
 

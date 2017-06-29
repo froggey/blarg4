@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class WizardTowerMirror: MonoBehaviour {
+class WizardTowerMirror: InterworkComponent {
     public Game.WizardTower component;
 
     ListController ui_manager;

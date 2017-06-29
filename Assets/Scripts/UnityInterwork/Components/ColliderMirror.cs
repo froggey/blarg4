@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityInterwork {
 
-class ColliderMirror: MonoBehaviour {
+class ColliderMirror: InterworkComponent {
     public Game.Collider component;
 
     void Start() {
