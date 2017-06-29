@@ -28,5 +28,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-/blarg4_Data/
-/blarg4.*
+*.zip

@@ -27,7 +27,7 @@ public class World {
     public int currentTick { get; private set; }
 
     // Seconds per tick.
-    public static readonly DReal deltaTime = (DReal)1 / 25;
+    public static readonly DReal deltaTime = (DReal)1 / 30;
     public DReal time { get { return currentTick * deltaTime; } }
 
     public Entity IdToEntity(int eid) {

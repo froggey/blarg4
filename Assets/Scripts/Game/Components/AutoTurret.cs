@@ -6,7 +6,7 @@ namespace Game {
 
 public class AutoTurret: Component {
     IWeapon[] weapons;
-    DReal weaponRange;
+    public DReal weaponRange { get; private set; }
 
     Entity attackTarget = null;
 
@@ -20,18 +20,24 @@ public class AutoTurret: Component {
     }
 
     public override void OnTick() {
+        var trueRange = weaponRange;
+        var collider = entity.GetComponent<Collider>();
+        if(collider != null) {
+            trueRange += collider.radius;
+        }
+
         if(attackTarget != null && !attackTarget.isAlive) {
             attackTarget = null;
         }
         if(attackTarget != null) {
             var range = entity.Range(attackTarget);
-            if(range > weaponRange) {
+            if(range > trueRange) {
                 attackTarget = null;
             }
         }
         if(attackTarget == null) {
             attackTarget = World.current
-                .FindEntitiesWithinRadius(entity.position, weaponRange, entity.team)
+                .FindEntitiesWithinRadius(entity.position, trueRange, entity.team)
                 .FirstOrDefault();
         }
         if(attackTarget != null) {

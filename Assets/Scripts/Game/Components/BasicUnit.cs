@@ -7,7 +7,8 @@ namespace Game {
 public class BasicUnit: Component {
     IMotor motor;
     IWeapon[] weapons;
-    DReal weaponRange;
+
+    public DReal weaponRange { get; private set; }
 
     Entity attackTarget = null;
 
