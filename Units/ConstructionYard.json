@@ -12,6 +12,7 @@
         "radius": "8",
         "height": "8",
         "fixedPosition": "true",
+        "pushy": "true",
       }
     },
     {
