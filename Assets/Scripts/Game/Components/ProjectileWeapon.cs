@@ -78,7 +78,7 @@ public class ProjectileWeapon: Component, IWeapon {
         var proj = ent.GetComponent<Projectile>();
         if(proj != null) {
             proj.spawner = entity;
-            proj.dir = dir;
+            proj.target = target_position;
         }
         World.current.eventListener.Animate(entity, "Fire");
     }

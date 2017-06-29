@@ -6,7 +6,6 @@
       "kind": "Projectile",
       "data": {
         "speed": "100",
-        "lifetime": "5",
         "directDamage": "10",
         "splashDamage": "50",
         "splashRadius": "20",
