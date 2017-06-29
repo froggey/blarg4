@@ -110,9 +110,6 @@ class EntityMirror: MonoBehaviour {
                 } else if(comp is Game.BasicUnit) {
                     var m = gameObject.AddComponent<BasicUnitMirror>();
                     m.component = (Game.BasicUnit)comp;
-                } else if(comp is Game.AutoTurret) {
-                    var m = gameObject.AddComponent<AutoTurretMirror>();
-                    m.component = (Game.AutoTurret)comp;
                 } else {
                     Logger.Log("Unmirrorable component {0}", comp);
                 }

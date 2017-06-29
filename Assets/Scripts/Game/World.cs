@@ -176,8 +176,6 @@ public class World {
                 comp = new Collider(ent, cproto);
             } else if(cproto.kind == "HitscanWeapon") {
                 comp = new HitscanWeapon(ent, cproto);
-            } else if(cproto.kind == "AutoTurret") {
-                comp = new AutoTurret(ent, cproto);
             } else if(cproto.kind == "Health") {
                 comp = new Health(ent, cproto);
             } else if(cproto.kind == "BuildRadius") {

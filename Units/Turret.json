@@ -30,7 +30,7 @@
       }
     },
     {
-      "kind": "AutoTurret",
+      "kind": "BasicUnit",
       "data": {
       }
     }
