@@ -19,10 +19,10 @@ class KeyboardMove: MonoBehaviour {
     public Vector3 lookPoint;
 
     void Update() {
-        if(Input.GetKey(KeyCode.R)) {
+        if(Input.GetKey(KeyCode.F)) {
             currentZoom += Time.deltaTime * zoomSpeed;
         }
-        if(Input.GetKey(KeyCode.F)) {
+        if(Input.GetKey(KeyCode.R)) {
             currentZoom -= Time.deltaTime * zoomSpeed;
         }
         currentZoom = Mathf.Clamp01(currentZoom);
