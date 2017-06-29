@@ -38,28 +38,4 @@ public class ListController: MonoBehaviour {
         go.SetActive(false);
         return lic;
     }
-
-    void BuildUiList() {
-        /*
-        currentlySelected.SendMessage("DoBuildUiElements", this, SendMessageOptions.DontRequireReceiver);
-        */
-    }
-
-    public void ChangeSelected(GameObject selected) {
-        /*
-        Debug.Log("Selecting " + selected);
-        if(currentlySelected == selected) {
-            Debug.Log("prev was same");
-            return;
-        }
-        ClearUiList();
-        currentlySelected = selected;
-        if(selected == null) {
-            haveActuallySelectedSomething = false;
-        } else {
-            haveActuallySelectedSomething = true;
-            BuildUiList();
-        }
-        */
-    }
 }

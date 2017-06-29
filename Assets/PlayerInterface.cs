@@ -84,80 +84,198 @@ class PlayerInterface: MonoBehaviour {
     public System.Func<Vector3, bool> placement_valid_cb;
     public System.Action placement_cancel_cb;
 
-    UnityInterwork.EntityMirror currentlySelected = null;
+    void UpdatePlacement() {
+        RaycastHit hit;
+        var hit_ok = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1<<9); // terrain only
+        if(!IsMouseOverUiElement()) {
+            if(Input.GetMouseButtonDown(1)) {
+                Destroy(placement_go);
+                placement_cancel_cb();
+                placement_go = null;
+                return;
+            }
+            if(Input.GetMouseButtonDown(0) && hit_ok && placement_valid_cb(hit.point)) {
+                Destroy(placement_go);
+                placement_action_cb(hit.point);
+                return;
+            }
+        }
+        if(hit_ok) {
+            placement_go.transform.position = hit.point;
+            if(placement_valid_cb(hit.point)) {
+                foreach(var mr in placement_go.GetComponentsInChildren<Renderer>()) {
+                    mr.material.color = Color.green;
+                }
+            } else {
+                foreach(var mr in placement_go.GetComponentsInChildren<Renderer>()) {
+                    mr.material.color = Color.red;
+                }
+            }
+        }
+    }
+
+    HashSet<UnityInterwork.EntityMirror> currentlySelected = new HashSet<UnityInterwork.EntityMirror>();
+
+    void ClearSelected() {
+        foreach(var s in currentlySelected) {
+            if(s != null) {
+                s.gameObject.SendMessage("OnDeselect");
+            }
+        }
+        currentlySelected.Clear();
+    }
+
+    bool marqueeStartDrag = false;
+    bool marqueeActive = false;
+    Vector2 marqueeOrigin;
+    Rect marqueeRect;
+    public RectTransform marqueeTranform;
 
     void Update() {
+        currentlySelected.RemoveWhere(x => x == null);
+
         if(placement_go != null) {
-            RaycastHit hit;
-            var hit_ok = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1<<9); // terrain only
-            if(!IsMouseOverUiElement()) {
-                if(Input.GetMouseButtonDown(1)) {
-                    Destroy(placement_go);
-                    placement_cancel_cb();
-                    placement_go = null;
-                    return;
-                }
-                if(Input.GetMouseButtonDown(0) && hit_ok && placement_valid_cb(hit.point)) {
-                    Destroy(placement_go);
-                    placement_action_cb(hit.point);
-                    return;
-                }
-            }
-            if(hit_ok) {
-                placement_go.transform.position = hit.point;
-                if(placement_valid_cb(hit.point)) {
-                    foreach(var mr in placement_go.GetComponentsInChildren<Renderer>()) {
-                        mr.material.color = Color.green;
-                    }
-                } else {
-                    foreach(var mr in placement_go.GetComponentsInChildren<Renderer>()) {
-                        mr.material.color = Color.red;
-                    }
-                }
-            }
+            marqueeRect.width = 0;
+            marqueeRect.height = 0;
+            marqueeActive = false;
+
+            UpdatePlacement();
         } else {
-            if(Input.GetMouseButtonDown(0) && !IsMouseOverUiElement()) {
+            if(IsMouseOverUiElement()) {
+                return;
+            }
+
+            var multiselect = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+            if(Input.GetMouseButtonUp(0)) {
                 RaycastHit hit;
                 if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+                    if(!multiselect) {
+                        ClearSelected();
+                    }
+
                     var next = hit.collider.GetComponentInParent<Selectable>();
-                    if(next == null) {
-                        if(currentlySelected != null) {
-                            currentlySelected.gameObject.SendMessage("OnDeselect");
-                            currentlySelected = null;
-                            uiManager.ChangeSelected(null);
-                        }
-                    } else {
+                    if(next != null) {
                         var mirror = next.GetComponent<UnityInterwork.EntityMirror>();
                         while(mirror.parent != null) {
                             mirror = mirror.parent;
                         }
-                        if(mirror != currentlySelected) {
-                            if(currentlySelected != null) {
-                                currentlySelected.gameObject.SendMessage("OnDeselect");
+                        if(currentlySelected.Contains(mirror)) {
+                            if(multiselect) {
+                                mirror.SendMessage("OnDeselect");
+                                currentlySelected.Remove(mirror);
                             }
+                        } else {
                             mirror.SendMessage("OnSelect");
-                            currentlySelected = mirror;
-                            uiManager.ChangeSelected(mirror.gameObject);
+                            currentlySelected.Add(mirror);
                         }
                     }
                 }
             }
 
-            if(Input.GetMouseButtonDown(1) && !IsMouseOverUiElement()) {
+            if(Input.GetMouseButtonUp(1)) {
                 RaycastHit hit;
-                if(currentlySelected != null && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
-                    var mirror = currentlySelected;
+                if(currentlySelected.Count != 0 && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
                     var hit_mirror = hit.collider.GetComponentInParent<UnityInterwork.EntityMirror>();
-                    if(hit_mirror == null) {
-                        testshit.MoveCommand(mirror, hit.point);
-                    } else {
-                        while(hit_mirror.parent != null) {
-                            hit_mirror = hit_mirror.parent;
+                    foreach(var mirror in currentlySelected) {
+                        if(hit_mirror == null) {
+                            testshit.MoveCommand(mirror, hit.point);
+                        } else {
+                            while(hit_mirror.parent != null) {
+                                hit_mirror = hit_mirror.parent;
+                            }
+                            testshit.AttackCommand(mirror, hit_mirror);
                         }
-                        testshit.AttackCommand(mirror, hit_mirror);
                     }
                 }
             }
+
+            if(Input.GetMouseButtonDown(0)) {
+                marqueeStartDrag = true;
+                marqueeOrigin = Input.mousePosition;
+            }
+
+            if(marqueeStartDrag && marqueeOrigin != (Vector2)Input.mousePosition) {
+                marqueeActive = true;
+            }
+
+            if(Input.GetMouseButtonUp(0) && marqueeActive) {
+                var selection = new HashSet<UnityInterwork.EntityMirror>();
+
+                if(!multiselect) {
+                    ClearSelected();
+                }
+
+                foreach(var unit in GameObject.FindGameObjectsWithTag("MultiSelectableUnit")) {
+                    var e = unit.GetComponent<UnityInterwork.EntityMirror>();
+                    if(e == null) {
+                        Debug.LogWarning("No entity in unit " + unit);
+                        continue;
+                    }
+                    while(e.parent != null) {
+                        e = e.parent;
+                    }
+                    if(selection.Contains(e)) {
+                        continue;
+                    }
+                    if(ComSat.instance != null && e.entity.team != ComSat.instance.localPlayer.team) {
+                        continue;
+                    }
+
+                    // Convert the world position of the unit to a screen position and then to a GUI point.
+                    Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
+                    Vector2 screenPoint = new Vector2(screenPos.x, screenPos.y);
+
+                    if(marqueeRect.Contains(screenPoint)) {
+                        selection.Add(e);
+                    }
+                }
+
+                foreach(var u in selection) {
+                    u.SendMessage("OnSelect");
+                    currentlySelected.Add(u);
+                }
+
+                // Reset the marquee so it no longer appears on the screen.
+                marqueeRect.width = 0;
+                marqueeRect.height = 0;
+                marqueeActive = false;
+            }
+
+            if(!Input.GetMouseButton(0)) {
+                marqueeActive = false;
+                marqueeStartDrag = false;
+            }
+
+            if(marqueeActive) {
+                Vector2 mouse = Input.mousePosition;
+
+                // Compute a new marquee rectangle.
+                marqueeRect.x = marqueeOrigin.x;
+                marqueeRect.y = marqueeOrigin.y;
+                marqueeRect.width = mouse.x - marqueeOrigin.x;
+                marqueeRect.height = mouse.y - marqueeOrigin.y;
+
+                // Prevent negative widths/heights.
+                if(marqueeRect.width < 0) {
+                    marqueeRect.x += marqueeRect.width;
+                    marqueeRect.width = -marqueeRect.width;
+                }
+                if(marqueeRect.height < 0) {
+                    marqueeRect.y += marqueeRect.height;
+                    marqueeRect.height = -marqueeRect.height;
+                }
+            }
+        }
+    }
+
+    void LateUpdate() {
+        if(marqueeActive) {
+            marqueeTranform.gameObject.SetActive(true);
+            marqueeTranform.position = new Vector3(marqueeRect.x, marqueeRect.y, 0);
+            marqueeTranform.sizeDelta = new Vector2(marqueeRect.width, marqueeRect.height);
+        } else {
+            marqueeTranform.gameObject.SetActive(false);
         }
     }
 }

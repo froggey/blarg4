@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114280446775336630}
   m_Layer: 0
   m_Name: LandRover
-  m_TagString: Untagged
+  m_TagString: MultiSelectableUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -877,3 +877,4 @@ MonoBehaviour:
     type: 2}
   resourceBarPrefab: {fileID: 1995834837967156, guid: bef4b4461cae540699a4146d7d1afa53,
     type: 2}
+  parent: {fileID: 0}
