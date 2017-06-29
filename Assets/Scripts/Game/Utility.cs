@@ -56,6 +56,15 @@ static public class Utility {
             return true ;
         }
 
+        // actually completely inside counts as a hit too.
+        var startSqrDist = (lineStart - circleOrigin).sqrMagnitude;
+        var endSqrDist = (lineEnd - circleOrigin).sqrMagnitude;
+        var sqrRadius = radius * radius;
+        if(startSqrDist < sqrRadius && endSqrDist < sqrRadius) {
+            outIp = lineStart;
+            return true;
+        }
+
         // no intn: FallShort, Past, CompletelyInside
         outIp = new DVector2();
         return false;

@@ -218,19 +218,37 @@ public class World {
 
             DVector2 result;
 
+            // FIXME: Need to adjust positions to correct for wrap.
+            // FIXME: Some cases still not handled properly.
+            //
+            //      _______________
+            //      |   /         |
+            //      ---X-----------
+            //        /
+            //       /
+            //      O
+            //     /
+            //    /
+            // Circle intersects at O, which is a miss, but a real intersect happens at X.
             if(Utility.IntersectLineCircle(position2d, c.radius, start2d, end2d, out result)) {
-                // Possible hit, work out the height at the intersect.
-                // This is probably a little bit off...
-                var dist = (start2d - result).magnitude;
-                var dir = (end - start).normalized;
-                var height = (start + dir * dist).y;
+                // Possible hit, work out the correct 3D position at the intersect.
+                var result3d = new DVector3(result.x, start.y, result.y);
+                var a = result3d - start;
+                var bhat = (end - start).normalized;
+                var ab = DVector3.Dot(a, bhat);
+                var intersectPoint = start + bhat * ab;
+                var height = intersectPoint.y;
                 var bottom = c.entity.position.y;
                 var top = bottom + c.height;
+                Logger.Log("result3d: {0}  a: {1}  bhat: {2}  ab: {3}  height: {4}  bottom: {5}  top:{6}",
+                           result3d, a, bhat, ab, height, bottom, top);
+                DebugExtension.DebugPoint((UnityEngine.Vector3)intersectPoint, UnityEngine.Color.blue, 10, 10);
+                UnityEngine.Debug.DrawLine((UnityEngine.Vector3)start, (UnityEngine.Vector3)end, UnityEngine.Color.green, 10);
+                UnityEngine.Debug.DrawLine((UnityEngine.Vector3)start, (UnityEngine.Vector3)result3d, UnityEngine.Color.green, 10);
                 if(bottom <= height && height <= top) {
-                    var hit_position = new DVector3(result.x, height, result.y);
                     var r = new LineCastResult();
                     r.entity = c.entity;
-                    r.position = hit_position;
+                    r.position = intersectPoint;
                     yield return r;
                 }
             }
