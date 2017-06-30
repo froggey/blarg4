@@ -38,7 +38,6 @@ public class Factory: Component {
         proto.data.TryGetValue("build7", out buildables[7]);
         proto.data.TryGetValue("build8", out buildables[8]);
         proto.data.TryGetValue("build9", out buildables[9]);
-        buildables = buildables.Where(x => x != null).ToArray();
     }
 
     public override void OnCreate() {
@@ -187,6 +186,10 @@ public class Factory: Component {
 
     public override void BuildCommand(int id, DVector3 position) {
         if(buildInProgress) {
+            return;
+        }
+
+        if(buildables[id] == null) {
             return;
         }
 

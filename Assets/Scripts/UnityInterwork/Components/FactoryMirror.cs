@@ -1,91 +1,105 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnityInterwork {
 
 class FactoryMirror: InterworkComponent {
+    public class Buildable {
+        public string name;
+        public int id;
+        public ListItemController uiElement;
+    }
+
     public Game.Factory component;
-    public string[] buildables;
+    public List<Buildable> buildables;
 
     Testshit testshit = null;
     ListController ui_manager;
 
-    ListItemController[] ui_elements;
-
     void Start() {
         testshit = Object.FindObjectOfType<Testshit>();
-        buildables = component.buildables;
+        buildables = new List<Buildable>();
 
         ui_manager = Object.FindObjectOfType<ListController>();
 
-        ui_elements = new ListItemController[buildables.Length];
-        for(var i = 0; i < buildables.Length; i += 1) {
-            var id = i; // closure
-            ui_elements[i] = ui_manager.AddUiElement(Resources.Load<Sprite>("Sprites/" + buildables[i]),
-                                                     buildables[i],
-                                                     (cancel) => DoBuild(id, cancel));
+        for(var i = 0; i < component.buildables.Length; i += 1) {
+            if(component.buildables[i] == null) {
+                continue;
+            }
+            var name = component.buildables[i];
+            var buildable = new Buildable();
+            buildable.name = name;
+            buildable.id = i;
+            buildable.uiElement = ui_manager.AddUiElement(Resources.Load<Sprite>("Sprites/" + name),
+                                                          name,
+                                                          (cancel) => DoBuild(buildable, cancel));
+            buildables.Add(buildable);
         }
     }
 
     void Update() {
         if(component.buildInProgress) {
-            foreach(var elt in ui_elements) {
-                elt.SetUiEnabled(false);
-                elt.SetProgress(0);
+            foreach(var elt in buildables) {
+                elt.uiElement.SetUiEnabled(false);
+                elt.uiElement.SetProgress(0);
             }
-            ui_elements[component.buildingWhat].SetUiEnabled(true);
-            ui_elements[component.buildingWhat].SetProgress(Mathf.Clamp01(((float)component.totalTime - (float)component.remainingTime) / (float)component.totalTime));
+            var active_elt = buildables.Single(e => e.id == component.buildingWhat);
+            active_elt.uiElement.SetUiEnabled(true);
+            active_elt.uiElement.SetProgress(Mathf.Clamp01(((float)component.totalTime - (float)component.remainingTime) / (float)component.totalTime));
         } else {
-            for(var i = 0; i < buildables.Length; i += 1) {
-                var ui_elt = ui_elements[i];
-                ui_elt.SetUiEnabled(component.HaveEnoughResources(i));
-                ui_elt.SetProgress(0);
+            foreach(var elt in buildables) {
+                elt.uiElement.SetUiEnabled(component.HaveEnoughResources(elt.id));
+                elt.uiElement.SetProgress(0);
             }
         }
     }
 
     void OnSelect() {
-        foreach(var elt in ui_elements) {
-            elt.gameObject.SetActive(true);
+        foreach(var elt in buildables) {
+            elt.uiElement.gameObject.SetActive(true);
         }
     }
 
     void OnDeselect() {
-        foreach(var elt in ui_elements) {
-            elt.gameObject.SetActive(false);
+        foreach(var elt in buildables) {
+            elt.uiElement.gameObject.SetActive(false);
         }
     }
 
     void OnDestroy() {
-        foreach(var elt in ui_elements) {
-            if(elt != null) {
-                Destroy(elt.gameObject);
+        foreach(var elt in buildables) {
+            if(elt.uiElement != null) {
+                Destroy(elt.uiElement.gameObject);
             }
         }
     }
 
-    void DoBuild(int id, bool cancel) {
+    void DoBuild(Buildable elt, bool cancel) {
         if(cancel) {
             testshit.StopCommand(GetComponent<EntityMirror>());
             return;
         }
         if(component.buildInProgress && component.currentMode == Game.BuildMode.BUILD_THEN_PLACE && component.remainingTime <= 0) {
-            testshit.BeginPlacement(buildables[component.buildingWhat],
+            if(elt.id != component.buildingWhat) {
+                return;
+            }
+            testshit.BeginPlacement(elt.name,
                                     point => testshit.DeployCommand(GetComponent<EntityMirror>(), point),
                                     point => component.CheckBuildPlacement(component.buildingWhat, (Game.DVector3)point),
                                     () => {});
             return;
         }
 
-        var mode = Game.World.current.entityPrototypes[buildables[id]].BuildMode();
+        var mode = Game.World.current.entityPrototypes[elt.name].BuildMode();
         if(mode == Game.BuildMode.BUILD_IN_PLACE ||
            mode == Game.BuildMode.BUILD_IMMEDIATE) {
-            testshit.BeginPlacement(buildables[id],
-                                    point => testshit.BuildCommand(GetComponent<EntityMirror>(), id, point),
-                                    point => component.CheckBuildPlacement(id, (Game.DVector3)point) && component.HaveEnoughResources(id),
+            testshit.BeginPlacement(elt.name,
+                                    point => testshit.BuildCommand(GetComponent<EntityMirror>(), elt.id, point),
+                                    point => component.CheckBuildPlacement(elt.id, (Game.DVector3)point) && component.HaveEnoughResources(elt.id),
                                     () => {});
         } else {
-            testshit.BuildCommand(GetComponent<EntityMirror>(), id, Vector3.zero);
+            testshit.BuildCommand(GetComponent<EntityMirror>(), elt.id, Vector3.zero);
         }
     }
 
