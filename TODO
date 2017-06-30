@@ -1,0 +1,56 @@
+jump to location via minimap
+combat alerts via minimap
+fog of war
+balloon collection animation
+checksum resources & prototypes
+send map data, resources & prototypes over the network
+save/load game state (and drop-in/drop-out multiplayer)
+make pathfinding take buildings into account
+improve unit steering behaviour to avoid other units/buildings
+fix ground units getting stuck in unreachable areas
+[scgtrp] do something else with the map edges (i couldn't find the wyvern until it was too late because it got hidden behind the wall)
+dynamic terrain deformation, and real-time reachability map updates
+westwood controls
+unit control groups (UI, n to select, ctrl+n to set group, ctrl+shift+n add to group(?))
+unit movement groups (issue command to multiple units and they coordinate)
+[???] balance
+[???] magic metal
+[scgtrp] more tanks!
+[scgtrp] i still kind of like the idea of a unit designed for swarming (but less OP than the blue orbs)
+[scgtrp] maybe some kind of magic hivemind thing where nearby blue orbs take damage when you hurt one of them?
+modular giant robots, like metal fatigue
+[scgtrp] maybe have magic focus more on powers (magic shields, temporary invisibility, ???) than combat force
+[scgtrp] magic nerfing ideas: magic comes from a magic field around you that regenerates over time, it's possible to temporarily deplete the magic in an area
+[scgtrp ???] magic nerfing ideas: magic is actually nerf guns, held by someone hallucinating that nerf guns are actually magic wands
+[scgtrp] cockatrice unit. {hitscan attack/gaze slows/stones units}
+[scgtrp] exploding runes you can place as traps
+[scgtrp] tech: separate fighter/bomber planes, helicopters
+ducks are not amphibious. add navmesh layer for amphibious & naval units
+amphibious & naval units
+[???] magic units constantly drain smoke, things go wrong when smoke runs out. golems fall apart, wyverns go wild, and ducks turn into normal non-lightning ducks
+[scgtrp] is there a way to mine from more than one smoke thing at a time?
+ai players
+more basicunit stances. aggressive (follow indefinitely), defensive (follow, but not too far), stationary (attack but don't follow), passive (don't attack or follow)
+fix linecast (partially complete)
+punt projectiles up over terrain (^ shape path)
+vertical/horizontal angular firing restrictions
+turrets
+minimum speeds for units
+minimun turn radii for units
+tracking missiles
+
+
+
+                    COMPLETED
+--------------------------------------------------
+match minimap to camera
+camera zoom
+sensible camera rotation
+fix lobby team button so it shows the colour of other players
+fix hitscan effect graphical gitches when crossing map boundary
+fix turret autotargetting at the edge of their range
+make units auto-attack like turrets
+improve collision response
+multiselect
+death effect
+fix projectile splash damage
