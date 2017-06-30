@@ -20,7 +20,9 @@ ExportedObj/
 
 # blender >:(
 *.blend1
+*.blend1.meta
 *.blend2
+*.blend2.meta
 
 # Unity3D generated meta files
 *.pidb.meta

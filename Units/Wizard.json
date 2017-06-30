@@ -54,6 +54,12 @@
         "build1": "TheOrb"
       }
     },
+    /*{
+      "kind": "Factory",
+      "data": {
+        "build2": "Shield",
+      }
+    },*/
     {
       "kind": "BuildRadius",
       "data": {

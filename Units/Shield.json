@@ -1,0 +1,27 @@
+{
+  "name": "Shield",
+  "resources": {
+    "Smoke": "10",
+  },
+  "data": {
+    "buildTime": "20",
+    "buildMode": "buildImmediate",
+  },
+  "components": [
+    {
+      "kind": "Collider",
+      "data": {
+        "radius": "20",
+        "height": "20",
+        "fixedPosition": "true",
+        "pushy": "true",
+      }
+    },
+    {
+      "kind": "Health",
+      "data": {
+        "max": "50"
+      }
+    },
+  ]
+}
