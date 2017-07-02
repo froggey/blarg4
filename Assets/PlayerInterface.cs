@@ -132,7 +132,7 @@ class PlayerInterface: MonoBehaviour {
     public RectTransform marqueeTranform;
 
     void Update() {
-        currentlySelected.RemoveWhere(x => x == null);
+        currentlySelected.RemoveWhere(x => x == null || x.entity == null);
 
         if(placement_go != null) {
             marqueeRect.width = 0;

@@ -38,6 +38,17 @@ turrets
 minimum speeds for units
 minimun turn radii for units
 tracking missiles
+improved selection graphic (difficult to see selected units as green player)
+tech tree
+sounds
+[scgtrp ???] giant butterfly nets to catch wyverns
+fix desync on start of 2nd match
+aerial units crash into ground & explode
+different kinds of terrain
+terrain deformation & real-time navmesh updates
+replays
+win condition
+multiple maps
 
 
 
@@ -54,3 +65,4 @@ improve collision response
 multiselect
 death effect
 fix projectile splash damage
+playerinterface nullref (selection related)
